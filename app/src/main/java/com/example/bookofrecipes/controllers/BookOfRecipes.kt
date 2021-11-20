@@ -4,7 +4,27 @@ import com.example.bookofrecipes.models.Ingredient
 
 object BookOfRecipes {
 
-    private val dishes: List<Dish> = emptyList()
+    private val dishes: List<Dish> = mutableListOf(
+        Dish.build(
+            recipes = listOf<Recipe>(),
+            name = "Курица по чеченски"
+        ){ cuisine = "Чеченская" },
+
+        Dish.build(
+            recipes = listOf<Recipe>(),
+            name = "Утка по татарски"
+        ){ cuisine = "Татарская" },
+
+        Dish.build(
+            recipes = listOf<Recipe>(),
+            name = "Кекс без ысходность"
+        ){ cuisine = "Домашняя" },
+
+        Dish.build(
+            recipes = listOf<Recipe>(),
+            name = "Пицца из батона"
+        ){ cuisine = "Домашняя" },
+    )
 
     fun addDish(dish: Dish) {
         TODO()
@@ -27,4 +47,10 @@ object BookOfRecipes {
     }
 
     fun getAllDishes() = dishes
+
+    fun getAllCuisine() = mutableSetOf<String>().apply {
+        dishes.forEach { this.add(it.cuisine) }
+    }
+
+    fun getDishes(cuisine: String) = dishes.filter { it.cuisine == cuisine }
 }

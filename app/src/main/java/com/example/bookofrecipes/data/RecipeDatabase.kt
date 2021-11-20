@@ -5,7 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [], version = 1, exportSchema = false)
+// https://github.com/stevdza-san/SearchRecyclerViewDemo/blob/master/app/src/main/java/com/example/searchrecyclerviewdemo/di/DatabaseModule.kt
+
+
+/*@Database(entities = [], version = 1, exportSchema = false)
+abstract class RecipeDatabase: RoomDatabase() {
+
+    abstract fun dao(): RecipeDao
+
+}*/
+
+
+/*@Database(entities = [], version = 1, exportSchema = false)
 abstract class RecipeDatabase: RoomDatabase() {
 
     abstract fun dao(): RecipeDao
@@ -28,4 +39,4 @@ abstract class RecipeDatabase: RoomDatabase() {
             ).fallbackToDestructiveMigration().build()
     }
 
-}
+}*/

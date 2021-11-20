@@ -3,36 +3,69 @@ package com.example.bookofrecipes
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.bookofrecipes.controllers.BookOfRecipes
 import com.example.bookofrecipes.ui.theme.BookOfRecipesTheme
+import com.example.bookofrecipes.ui.theme.DishItem
+import com.example.bookofrecipes.ui.theme.Typography
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BookOfRecipesTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+            BookOfRecipesTheme(true) {
+
+                LazyColumn(
+                    contentPadding = PaddingValues(all = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+
+                    BookOfRecipes.getAllCuisine().forEach { cuisine ->
+                        stickyHeader {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color.LightGray)
+                                    .padding(12.dp),
+                                text = "$cuisine кухня"
+                            )
+                        }
+                        items(items = BookOfRecipes.getDishes(cuisine)) { dish ->
+                            DishItem(dish = dish)
+                        }
+                    }
                 }
+
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     BookOfRecipesTheme {
-        Greeting("Android")
+
     }
 }
+
+
+
+

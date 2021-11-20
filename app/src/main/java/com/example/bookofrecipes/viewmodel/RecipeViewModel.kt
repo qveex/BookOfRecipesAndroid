@@ -1,9 +1,12 @@
 package com.example.bookofrecipes.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.ViewModel
+import com.example.bookofrecipes.repositories.Repository
 
-class RecipeViewModel(application: Application): AndroidViewModel(application) {
+class RecipeViewModel @ViewModelInject constructor(
+    private val repository: Repository
+): ViewModel() {
 
 
 
