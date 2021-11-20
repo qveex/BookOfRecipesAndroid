@@ -19,9 +19,9 @@ data class Recipe(
 
 ) {
 
-    private val id: Int = 0
+    val id: Int = 0
 
-    private constructor(builder: Builder):
+    private constructor(builder: Builder) :
             this(
                 builder.steps, builder.ingredients,
                 builder.description, builder.cookingTime,
@@ -29,25 +29,34 @@ data class Recipe(
             )
 
     companion object {
-        inline fun build(steps: List<CookingStep>, ingredients: List<Ingredient>, block: Builder.() -> Unit) = Builder(steps, ingredients).apply(block).build()
+        inline fun build(
+            steps: List<CookingStep>,
+            ingredients: List<Ingredient>,
+            block: Builder.() -> Unit
+        ) = Builder(steps, ingredients).apply(block).build()
     }
 
     fun addStep(step: CookingStep) {
         TODO()
     }
+
     fun removeStep(id: Int) {
         TODO()
     }
+
     fun updateStep(id: Int, updStep: CookingStep) {
         TODO()
     }
 
     fun getSteps() = steps
+    fun getIngredients() = ingredients
 
 
     class Builder(
+
         val steps: List<CookingStep>,
         val ingredients: List<Ingredient>
+
     ) {
 
         var description: Description? = null
