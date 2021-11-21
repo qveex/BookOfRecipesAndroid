@@ -11,13 +11,13 @@ data class Dish(
 
 ) {
 
-    private constructor(name: String, info: String, recipes: List<Recipe>): this(name, info){
+    private constructor(name: String, info: String, recipes: MutableList<Recipe>): this(name, info){
         this.recipes = recipes
     }
 
     @PrimaryKey(autoGenerate = true)
     var dishId: Int = 0
-    @Ignore private var recipes: List<Recipe> = emptyList()
+    @Ignore private var recipes: MutableList<Recipe> = mutableListOf()
 
     private constructor(builder: Builder) :
             this(
@@ -28,7 +28,7 @@ data class Dish(
 
     companion object {
         inline fun build(
-            recipes: List<Recipe>,
+            recipes: MutableList<Recipe>,
             name: String,
             block: Builder.() -> Unit
         ) = Builder(recipes, name).apply(block).build()
@@ -36,6 +36,10 @@ data class Dish(
 
     fun addRecipe(recipe: Recipe) {
         TODO()
+    }
+
+    fun addRecipes(recipes: List<Recipe>) {
+        this.recipes.addAll(recipes)
     }
 
     fun removeRecipe(id: Int) {
@@ -50,7 +54,7 @@ data class Dish(
 
     class Builder(
 
-        val recipes: List<Recipe>,
+        val recipes: MutableList<Recipe>,
         val name: String
 
     ) {

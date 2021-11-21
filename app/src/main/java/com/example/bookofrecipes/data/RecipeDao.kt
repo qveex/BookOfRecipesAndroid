@@ -7,7 +7,7 @@ import com.example.bookofrecipes.models.*
 @Dao
 abstract class RecipeDao {
 
-    fun insertDish(dish: Dish) {
+    suspend fun insertDish(dish: Dish) {
         _insertDish(dish)
         dish.getRecipes().forEach { recipe ->
 
@@ -22,23 +22,28 @@ abstract class RecipeDao {
         }
     }
 
+    @Transaction
     @Query("SELECT ingredientId FROM Ingredient WHERE name = :name")
     abstract fun getIngId(name: String): LiveData<Int>
 
-    @Insert
-    abstract fun _insertDish(dish: Dish)
+    @Transaction
+    @Query("SELECT * FROM Dish")
+    abstract fun getDishes(): LiveData<List<Dish>>
 
     @Insert
-    abstract fun _insertRecipe(recipe: Recipe)
+    abstract suspend fun _insertDish(dish: Dish)
 
     @Insert
-    abstract fun _insertSteps(steps: List<CookingStep>)
+    abstract suspend fun _insertRecipe(recipe: Recipe)
+
+    @Insert
+    abstract suspend fun _insertSteps(steps: List<CookingStep>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun _insertIngredients(ingredient: List<Ingredient>)
+    abstract suspend fun _insertIngredients(ingredient: List<Ingredient>)
 
     @Insert
-    abstract fun _insertRecipeIngredientCrossRef(ref: RecipeIngredientCrossRef)
+    abstract suspend fun _insertRecipeIngredientCrossRef(ref: RecipeIngredientCrossRef)
 
     @Transaction
     @Query("SELECT * FROM Recipe")

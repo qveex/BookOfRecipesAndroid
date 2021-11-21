@@ -1,9 +1,6 @@
 package com.example.bookofrecipes.models
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.Junction
-import androidx.room.Relation
+import androidx.room.*
 
 data class DishWithRecipes(
 
@@ -29,7 +26,24 @@ data class RecipeWithSteps(
 )
 
 
-@Entity(primaryKeys = ["recipeId", "ingredientId"])
+@Entity(
+    primaryKeys = ["recipeId", "ingredientId"],
+    foreignKeys =
+    [
+        ForeignKey(
+            onDelete = ForeignKey.CASCADE,
+            entity = Recipe::class,
+            parentColumns = ["recipeId"],
+            childColumns = ["recipeId"]
+        ),
+        ForeignKey(
+            onDelete = ForeignKey.CASCADE,
+            entity = Ingredient::class,
+            parentColumns = ["ingredientId"],
+            childColumns = ["ingredientId"]
+        )
+    ]
+)
 data class RecipeIngredientCrossRef(
 
     val recipeId: Int,

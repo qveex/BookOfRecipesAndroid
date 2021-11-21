@@ -1,41 +1,43 @@
 package com.example.bookofrecipes.controllers
 
+import androidx.activity.viewModels
 import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.models.Dish
 import com.example.bookofrecipes.models.Ingredient
 import com.example.bookofrecipes.models.Recipe
+import com.example.bookofrecipes.viewmodel.RecipeViewModel
 
 object BookOfRecipes {
 
     private val dishes: List<Dish> = mutableListOf(
         Dish.build(
-            recipes = listOf<Recipe>(Recipe.build(
-                listOf<CookingStep>(),
-                listOf<Ingredient>()
+            recipes = mutableListOf<Recipe>(Recipe.build(
+                mutableListOf<CookingStep>(),
+                mutableListOf<Ingredient>()
             ) { cuisine = "Чеченская" }),
             name = "Курица по чеченски"
         ){  },
 
         Dish.build(
-            recipes = listOf<Recipe>(Recipe.build(
-                listOf<CookingStep>(),
-                listOf<Ingredient>()
+            recipes = mutableListOf<Recipe>(Recipe.build(
+                mutableListOf<CookingStep>(),
+                mutableListOf<Ingredient>()
             ) { cuisine = "Татарская" }),
             name = "Утка по татарски"
         ){  },
 
         Dish.build(
-            recipes = listOf<Recipe>(Recipe.build(
-                listOf<CookingStep>(),
-                listOf<Ingredient>()
+            recipes = mutableListOf<Recipe>(Recipe.build(
+                mutableListOf<CookingStep>(),
+                mutableListOf<Ingredient>()
             ) {  }),
             name = "Кекс Безысходность"
         ){  },
 
         Dish.build(
-            recipes = listOf<Recipe>(Recipe.build(
-                listOf<CookingStep>(),
-                listOf<Ingredient>()
+            recipes = mutableListOf<Recipe>(Recipe.build(
+                mutableListOf<CookingStep>(),
+                mutableListOf<Ingredient>()
             ) {  }),
             name = "Пицца из батона"
         ){  },

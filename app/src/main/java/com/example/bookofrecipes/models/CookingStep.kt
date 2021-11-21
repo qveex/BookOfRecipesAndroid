@@ -2,9 +2,20 @@ package com.example.bookofrecipes.models
 
 import android.media.Image
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            onDelete = CASCADE,
+            entity = Recipe::class,
+            parentColumns = ["recipeId"],
+            childColumns = ["stepId"]
+        )
+    ]
+)
 data class CookingStep(
 
     @PrimaryKey(autoGenerate = true)

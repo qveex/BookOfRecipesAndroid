@@ -2,7 +2,16 @@ package com.example.bookofrecipes.models
 
 import androidx.room.*
 
-@Entity
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            onDelete = ForeignKey.CASCADE,
+            entity = Dish::class,
+            parentColumns = ["dishId"],
+            childColumns = ["recipeId"]
+        )
+    ]
+)
 data class Recipe(
 
     @PrimaryKey(autoGenerate = true)
