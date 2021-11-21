@@ -1,13 +1,18 @@
 package com.example.bookofrecipes.models
 
-interface Ingredient {
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
-    val id: Int
-    val name: String
-    val type: String
-    val description: String
-    val measure: String
+@Entity(indices = [Index(value = ["name"], unique = true)])
+abstract class Ingredient {
 
-    fun getIng(): String
+    @PrimaryKey(autoGenerate = true)
+    val ingredientId: Int = 0
+    val name: String = ""
+    val number: Double = .0
+    val measure: String = ""
+
+    abstract fun getIng(): String
 
 }

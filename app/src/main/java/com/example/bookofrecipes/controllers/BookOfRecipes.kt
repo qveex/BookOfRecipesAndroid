@@ -1,6 +1,8 @@
 package com.example.bookofrecipes.controllers
 
+import com.example.bookofrecipes.models.Dish
 import com.example.bookofrecipes.models.Ingredient
+import com.example.bookofrecipes.models.Recipe
 
 object BookOfRecipes {
 

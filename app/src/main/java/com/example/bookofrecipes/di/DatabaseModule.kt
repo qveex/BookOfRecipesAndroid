@@ -2,7 +2,7 @@ package com.example.bookofrecipes.di
 
 import android.content.Context
 import androidx.room.Room
-//import com.example.bookofrecipes.data.RecipeDatabase
+import com.example.bookofrecipes.data.RecipeDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,7 +10,7 @@ import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
-/*@Module
+@Module
 @InstallIn(ApplicationComponent::class)
 object DatabaseModule {
 
@@ -28,4 +28,4 @@ object DatabaseModule {
     @Provides
     fun provideDao(database: RecipeDatabase) = database.dao()
 
-}*/
+}

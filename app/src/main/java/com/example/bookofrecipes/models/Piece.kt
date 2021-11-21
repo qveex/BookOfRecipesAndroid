@@ -1,13 +1,9 @@
 package com.example.bookofrecipes.models
 
-import com.example.bookofrecipes.controllers.Recipe
-
 data class Piece(
-    val capacity: Double,
     override val id: Int,
     override val name: String,
-    override val type: String,
-    override val description: String,
+    override val number: Double,
     override val measure: String
 ) : Ingredient {
 

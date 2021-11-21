@@ -1,10 +1,16 @@
 package com.example.bookofrecipes.models
 
 import android.media.Image
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class CookingStep(
 
-    private val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    private val stepId: Int,
+    var recipeId: Int,
+
     val title: String,
     val info: String,
     val time: String,
