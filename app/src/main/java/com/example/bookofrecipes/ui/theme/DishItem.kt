@@ -32,12 +32,6 @@ fun DishItem(dish: Dish) {
             fontWeight = FontWeight.Bold
         )
 
-        Text(
-            text = dish.cuisine,
-            fontSize = Typography.body1.fontSize,
-            fontWeight = FontWeight.Normal
-        )
-
     }
 
 }
@@ -51,7 +45,7 @@ fun DishItemPreview() {
         dish = Dish.build(
             recipes = listOf<Recipe>(),
             name = "Утка по татарски"
-        ){ cuisine = "Татарская" }
+        ){  }
     )
 
 }

@@ -1,12 +1,12 @@
 package com.example.bookofrecipes.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.bookofrecipes.models.*
 
 @Dao
 abstract class RecipeDao {
 
-    @Transaction
     fun insertDish(dish: Dish) {
         _insertDish(dish)
         dish.getRecipes().forEach { recipe ->
@@ -23,7 +23,7 @@ abstract class RecipeDao {
     }
 
     @Query("SELECT ingredientId FROM Ingredient WHERE name = :name")
-    abstract fun getIngId(name: String)
+    abstract fun getIngId(name: String): LiveData<Int>
 
     @Insert
     abstract fun _insertDish(dish: Dish)
@@ -42,18 +42,22 @@ abstract class RecipeDao {
 
     @Transaction
     @Query("SELECT * FROM Recipe")
-    abstract fun getRecipesWithIngredients(): List<RecipeWithIngredients>
+    abstract fun getRecipesWithIngredients(): LiveData<List<RecipeWithIngredients>>
 
     @Transaction
     @Query("SELECT * FROM Ingredient")
-    abstract fun getIngredientsWithRecipes(): List<IngredientWithRecipes>
+    abstract fun getIngredientsWithRecipes(): LiveData<List<IngredientWithRecipes>>
 
     @Transaction
     @Query("SELECT * FROM Dish")
-    abstract fun getDishesWithRecipes(): List<DishWithRecipes>
+    abstract fun getDishesWithRecipes(): LiveData<List<DishWithRecipes>>
 
     @Transaction
     @Query("SELECT * FROM Recipe")
-    abstract fun getRecipesWithSteps(): List<RecipeWithSteps>
+    abstract fun getRecipesWithSteps(): LiveData<List<RecipeWithSteps>>
+
+    @Transaction
+    @Query("SELECT * FROM Recipe")
+    abstract fun getRecipes(): LiveData<List<RecipesWithAllTheOthers>>
 
 }

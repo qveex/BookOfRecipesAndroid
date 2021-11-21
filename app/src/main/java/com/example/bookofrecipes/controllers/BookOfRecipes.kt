@@ -1,5 +1,6 @@
 package com.example.bookofrecipes.controllers
 
+import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.models.Dish
 import com.example.bookofrecipes.models.Ingredient
 import com.example.bookofrecipes.models.Recipe
@@ -8,24 +9,36 @@ object BookOfRecipes {
 
     private val dishes: List<Dish> = mutableListOf(
         Dish.build(
-            recipes = listOf<Recipe>(),
+            recipes = listOf<Recipe>(Recipe.build(
+                listOf<CookingStep>(),
+                listOf<Ingredient>()
+            ) { cuisine = "Чеченская" }),
             name = "Курица по чеченски"
-        ){ cuisine = "Чеченская" },
+        ){  },
 
         Dish.build(
-            recipes = listOf<Recipe>(),
+            recipes = listOf<Recipe>(Recipe.build(
+                listOf<CookingStep>(),
+                listOf<Ingredient>()
+            ) { cuisine = "Татарская" }),
             name = "Утка по татарски"
-        ){ cuisine = "Татарская" },
+        ){  },
 
         Dish.build(
-            recipes = listOf<Recipe>(),
-            name = "Кекс без ысходность"
-        ){ cuisine = "Домашняя" },
+            recipes = listOf<Recipe>(Recipe.build(
+                listOf<CookingStep>(),
+                listOf<Ingredient>()
+            ) {  }),
+            name = "Кекс Безысходность"
+        ){  },
 
         Dish.build(
-            recipes = listOf<Recipe>(),
+            recipes = listOf<Recipe>(Recipe.build(
+                listOf<CookingStep>(),
+                listOf<Ingredient>()
+            ) {  }),
             name = "Пицца из батона"
-        ){ cuisine = "Домашняя" },
+        ){  },
     )
 
     fun addDish(dish: Dish) {
@@ -50,9 +63,9 @@ object BookOfRecipes {
 
     fun getAllDishes() = dishes
 
-    fun getAllCuisine() = mutableSetOf<String>().apply {
+    /*fun getAllCuisine() = mutableSetOf<String>().apply {
         dishes.forEach { this.add(it.cuisine) }
-    }
+    }*/
 
-    fun getDishes(cuisine: String) = dishes.filter { it.cuisine == cuisine }
+    //fun getDishes(cuisine: String) = dishes.filter { it.cuisine == cuisine }
 }

@@ -1,7 +1,8 @@
 package com.example.bookofrecipes.models
 
+/*
 data class Piece(
-    override val id: Int,
+    override val ingredientId: Int,
     override val name: String,
     override val number: Double,
     override val measure: String
@@ -18,3 +19,4 @@ data class Piece(
         }*/
     }
 }
+*/

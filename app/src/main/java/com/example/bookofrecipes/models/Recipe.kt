@@ -6,11 +6,8 @@ import androidx.room.*
 data class Recipe(
 
     @PrimaryKey(autoGenerate = true)
-    val recipeId: Int,
+    var recipeId: Int,
     var dishId: Int,
-
-    @Ignore private val steps: List<CookingStep>,
-    @Ignore private val ingredients: List<Ingredient>,
 
     @Embedded val description: Description?,
     val cookingTime: Double,
@@ -21,6 +18,23 @@ data class Recipe(
     //val image: Image
 
 ) {
+
+    @Ignore private var steps: List<CookingStep> = emptyList()
+    @Ignore private var ingredients: List<Ingredient> = emptyList()
+
+    private constructor(
+        recipeId: Int, dishId: Int,
+        steps: List<CookingStep>,
+        ingredients: List<Ingredient>,
+        description: Description?,
+        cookingTime: Double,
+        cuisine: String,
+        cost: Double, complexity:
+        Byte, spicy: Byte
+    ): this(recipeId, dishId, description, cookingTime, cuisine, cost, complexity, spicy) {
+        this.steps = steps
+        this.ingredients = ingredients
+    }
 
     private constructor(builder: Builder) :
             this(

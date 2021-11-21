@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
 
-                    BookOfRecipes.getAllCuisine().forEach { cuisine ->
+                    /*BookOfRecipes.getAllCuisine().forEach { cuisine ->
                         stickyHeader {
                             Text(
                                 modifier = Modifier
@@ -46,9 +46,9 @@ class MainActivity : ComponentActivity() {
                                 text = "$cuisine кухня"
                             )
                         }
-                        items(items = BookOfRecipes.getDishes(cuisine)) { dish ->
-                            DishItem(dish = dish)
-                        }
+                    }*/
+                    items(items = BookOfRecipes.getAllDishes()) { dish ->
+                        DishItem(dish = dish)
                     }
                 }
 

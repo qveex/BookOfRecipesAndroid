@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class CookingStep(
 
     @PrimaryKey(autoGenerate = true)
-    private val stepId: Int,
+    val stepId: Int,
     var recipeId: Int,
 
     val title: String,

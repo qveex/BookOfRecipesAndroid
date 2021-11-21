@@ -6,19 +6,24 @@ import androidx.room.*
 @Entity
 data class Dish(
 
-    @Ignore private val recipes: List<Recipe>,
     val name: String,
     val info: String
 
 ) {
 
+    private constructor(name: String, info: String, recipes: List<Recipe>): this(name, info){
+        this.recipes = recipes
+    }
+
     @PrimaryKey(autoGenerate = true)
-    val dishId: Int = 0
+    var dishId: Int = 0
+    @Ignore private var recipes: List<Recipe> = emptyList()
 
     private constructor(builder: Builder) :
             this(
-                builder.recipes, builder.name,
-                builder.info
+                builder.name,
+                builder.info,
+                builder.recipes,
             )
 
     companion object {

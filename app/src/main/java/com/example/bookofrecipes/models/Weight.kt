@@ -1,10 +1,11 @@
 package com.example.bookofrecipes.models
 
+/*
 data class Weight(
-    override val id: Int,
+    override val ingredientId: Int,
     override val name: String,
     override val number: Double,
-    override val measure: String
+    override var measure: String
 ) : Ingredient {
 
 
@@ -16,3 +17,4 @@ data class Weight(
     fun gram() = .0
     fun glasses() = 0
 }
+*/

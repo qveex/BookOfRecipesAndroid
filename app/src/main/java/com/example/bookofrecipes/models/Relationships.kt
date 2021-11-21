@@ -61,3 +61,24 @@ data class IngredientWithRecipes(
     val recipes: List<Recipe>
 
 )
+
+
+
+data class RecipesWithAllTheOthers(
+
+    @Embedded val recipe: Recipe,
+    @Relation(
+        parentColumn = "recipeId",
+        entityColumn = "recipeId"
+    )
+    val steps: List<CookingStep>,
+    @Relation(
+        parentColumn = "recipeId",
+        entityColumn = "ingredientId",
+        associateBy = Junction(RecipeIngredientCrossRef::class)
+    )
+    val ingredients: List<Ingredient>
+
+)
+
+
