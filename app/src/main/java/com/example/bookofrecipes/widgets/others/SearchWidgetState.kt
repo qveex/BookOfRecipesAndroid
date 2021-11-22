@@ -1,4 +1,4 @@
-package com.example.bookofrecipes.widgets
+package com.example.bookofrecipes.widgets.others
 
 enum class SearchWidgetState {
 

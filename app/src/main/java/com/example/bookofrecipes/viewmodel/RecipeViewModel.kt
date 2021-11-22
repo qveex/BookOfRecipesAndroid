@@ -3,14 +3,8 @@ package com.example.bookofrecipes.viewmodel
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.bookofrecipes.models.Dish
-import com.example.bookofrecipes.repositories.Repository
-import com.example.bookofrecipes.widgets.SearchWidgetState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.bookofrecipes.widgets.others.SearchWidgetState
 
 class RecipeViewModel //@ViewModelInject constructor(
     //private val repository: Repository
