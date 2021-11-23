@@ -16,17 +16,6 @@ fun DishList(dishes: List<Dish>, navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
-        /*BookOfRecipes.getAllCuisine().forEach { cuisine ->
-            stickyHeader {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.LightGray)
-                        .padding(12.dp),
-                    text = "$cuisine кухня"
-                )
-            }
-        }*/
         items(items = dishes) { dish ->
             DishItem(dish = dish, navController = navController)
         }

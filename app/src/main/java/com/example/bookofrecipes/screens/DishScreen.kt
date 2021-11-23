@@ -2,6 +2,7 @@ package com.example.bookofrecipes.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -58,9 +60,11 @@ fun DishScreen(navController: NavController, dishId: Int) {
                     maxLines = 1
                 )
             }
-            
-            RowTextCenter(text = "Dish description")
-            RowTextCenter(text = dish.info)
+
+            if (dish.info != "") {
+                RowTextCenter(text = "Dish description")
+                RowTextCenter(text = dish.info)
+            }
             DishDivider()
             RowTextCenter(text = "Recipes")
             DishDivider()
@@ -88,6 +92,7 @@ fun RecipeList(dish: Dish, navController: NavController) {
                         .fillMaxWidth()
                         .background(Color.LightGray)
                         .padding(6.dp),
+                        //.border(width = 1.dp, color = Color.White, shape = RoundedCornerShape(128.dp)),
                     text = "$cuisine кухня",
                     color = Color.DarkGray
                 )

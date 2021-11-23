@@ -31,7 +31,7 @@ fun ListDishScreen(recipeViewModel: RecipeViewModel, navController: NavControlle
                     recipeViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
                 },
                 onSearchClicked = {
-                    Log.i("Search Text", it)
+                    //Log.i("Search Text", it)
                 },
                 onSearchTriggered = {
                     recipeViewModel.updateSearchWidgetState(SearchWidgetState.OPENED)
@@ -43,7 +43,10 @@ fun ListDishScreen(recipeViewModel: RecipeViewModel, navController: NavControlle
         backgroundColor = Color.DarkGray
     ) {
 
-        DishList(dishes = BookOfRecipes.getAllDishes(), navController = navController)
+        DishList(
+            dishes = BookOfRecipes.findDishes(recipeViewModel.searchTextState.value),
+            navController = navController
+        )
 
     }
 }

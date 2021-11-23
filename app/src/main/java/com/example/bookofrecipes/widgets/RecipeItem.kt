@@ -15,8 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.bookofrecipes.models.Dish
 import com.example.bookofrecipes.models.Recipe
 import com.example.bookofrecipes.ui.theme.Typography
 import com.example.bookofrecipes.widgets.nav.Screen
@@ -28,7 +26,7 @@ fun RecipeItem(recipe: Recipe, navController: NavController) {
     Surface(
         modifier = Modifier
             .clickable {
-                //navController.navigate(route = Screen.Dish.passId(dish.dishId))
+                navController.navigate(route = Screen.Recipe.passId(recipe.recipeId))
             }
             .background(Color.DarkGray),
         color = Color.DarkGray
@@ -57,12 +55,6 @@ fun RecipeItem(recipe: Recipe, navController: NavController) {
 @Preview
 fun RecipeItemPreview() {
 
-    DishItem(
-        dish = Dish.build(
-            recipes = mutableListOf<Recipe>(),
-            name = "Утка по татарски"
-        ) { },
-        navController = rememberNavController()
-    )
+
 }
 

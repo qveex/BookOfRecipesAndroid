@@ -91,7 +91,7 @@ data class Recipe(
 
         var description: Description? = null
         var cookingTime: Double = .0
-        var cuisine: String = "Другое"
+        var cuisine: String = "Другая"
         var cost: Double = .0
         var complexity: Byte = 0
         var spicy: Byte = 0

@@ -17,25 +17,35 @@ fun NavGraph(navController: NavHostController, viewModel: RecipeViewModel) {
         navController = navController,
         startDestination = Screen.Dishes.route
     ) {
+
         composable(route = Screen.Dishes.route) {
             ListDishScreen(recipeViewModel = viewModel, navController = navController)
         }
+
         composable(route = Screen.Favorites.route) {
-            FavoritesScreen()
+            FavoritesScreen(navController = navController)
         }
+
         composable(route = Screen.AddDish.route) {
             AddDishScreen()
         }
+
         composable(
             route = Screen.Dish.route,
-            arguments = listOf(navArgument("dishId"){
+            arguments = listOf(navArgument("dishId") {
                 type = NavType.IntType
             })
         ) {
             DishScreen(navController = navController, it.arguments!!.getInt("dishId"))
         }
-        composable(route = Screen.Recipe.route) {
-            RecipeScreen()
+
+        composable(
+            route = Screen.Recipe.route,
+            arguments = listOf(navArgument("recipeId") {
+                type = NavType.IntType
+            })
+        ) {
+            RecipeScreen(navController, it.arguments!!.getInt("recipeId"))
         }
     }
 }

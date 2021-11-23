@@ -15,25 +15,25 @@ object BookOfRecipes {
                     "Курица по Чеченски",
                     mutableListOf<CookingStep>(),
                     mutableListOf<Ingredient>()
-                ) { cuisine = "Чеченская" },
+                ) { cuisine = "Чеченская" }.apply { recipeId = 0 },
 
                 Recipe.build(
                     "Курица по Таджикски",
                     mutableListOf<CookingStep>(),
                     mutableListOf<Ingredient>()
-                ) { cuisine = "Таджикская" },
+                ) { cuisine = "Таджикская" }.apply { recipeId = 1 },
 
                 Recipe.build(
                     "Курица по Американски",
                     mutableListOf<CookingStep>(),
                     mutableListOf<Ingredient>()
-                ) { cuisine = "Американская" },
+                ) { cuisine = "Американская" }.apply { recipeId = 2 },
 
                 Recipe.build(
                     "Курица по Африкански",
                     mutableListOf<CookingStep>(),
                     mutableListOf<Ingredient>()
-                ) { cuisine = "Африканская" }
+                ) { cuisine = "Африканская" }.apply { recipeId = 3 }
             ),
 
             name = "Запеченая курица"
@@ -73,20 +73,35 @@ object BookOfRecipes {
         ) { }).apply { dishId = 3 },
     )
 
+    private val favorites: MutableList<Int> = mutableListOf(
+        1, 2
+    )
 
+    fun getFavorites() = mutableListOf<Recipe>().apply {
 
+        dishes.forEach { dish ->
+            this.addAll(dish.getRecipes().filter { favorites.contains(it.recipeId) })
+        }
+
+    }
+
+    fun addFavorite(recipeId: Int) = favorites.add(recipeId)
+    fun removeFavorite(recipeId: Int) = favorites.removeIf { it == recipeId }
 
     fun addDish(dish: Dish) {
         if (!dishes.contains(dish)) dishes.add(dish)
     }
 
-    fun removeDish(id: Int) = dishes.removeIf{ it.dishId == id }
+    fun removeDish(id: Int) = dishes.removeIf { it.dishId == id }
 
     fun updateDish(id: Int, dish: Dish) {
         TODO()
     }
 
-    fun findDishes(name: String) = dishes.filter { it.name == name }
+    fun findDishes(name: String = "") =
+        if (name != "")
+            dishes.filter { it.name.contains(name) }
+        else getAllDishes()
 
 
     fun findDishById(id: Int) = dishes.find { it.dishId == id }!!
@@ -105,6 +120,22 @@ object BookOfRecipes {
         }
     }
 
+    /* @it should be deleted after connecting db!!! */
+    /* @don't use it please!!! */
+    fun getRecipe(recipeId: Int): Recipe {
+
+        val recipe = Recipe.build(
+            "Кажется, тут был null",
+            mutableListOf<CookingStep>(),
+            mutableListOf<Ingredient>()
+        ) { cuisine = "Null'овская" }
+
+        dishes.forEach { dish ->
+            val f = dish.getRecipes().find { it.recipeId == recipeId }
+            if (f != null) return f
+        }
+        return recipe
+    }
 
     //fun getDishes(cuisine: String) = dishes.filter { it.cuisine == cuisine }
 }
