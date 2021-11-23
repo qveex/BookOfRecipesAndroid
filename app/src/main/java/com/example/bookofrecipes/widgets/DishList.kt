@@ -6,11 +6,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.example.bookofrecipes.controllers.BookOfRecipes
+import androidx.navigation.NavController
 import com.example.bookofrecipes.models.Dish
 
 @Composable
-fun DishList(dishes: List<Dish>) {
+fun DishList(dishes: List<Dish>, navController: NavController) {
     LazyColumn(
         contentPadding = PaddingValues(all = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -28,7 +28,7 @@ fun DishList(dishes: List<Dish>) {
             }
         }*/
         items(items = dishes) { dish ->
-            DishItem(dish = dish)
+            DishItem(dish = dish, navController = navController)
         }
     }
 }

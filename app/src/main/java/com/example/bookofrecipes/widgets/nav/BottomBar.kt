@@ -1,23 +1,21 @@
-package com.example.bookofrecipes.widgets
+package com.example.bookofrecipes.widgets.nav
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.bookofrecipes.widgets.others.BottomBarScreen
 
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.Dishes,
-        BottomBarScreen.Favorites,
-        BottomBarScreen.AddDish
+        Screen.Dishes,
+        Screen.Favorites,
+        Screen.AddDish
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -32,7 +30,7 @@ fun BottomBar(navController: NavHostController) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarScreen,
+    screen: Screen,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {

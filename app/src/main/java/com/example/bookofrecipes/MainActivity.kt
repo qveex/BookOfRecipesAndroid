@@ -21,7 +21,6 @@ class MainActivity : ComponentActivity() {
             BookOfRecipesTheme(true) {
 
                 MainScreen(recipeViewModel = recipeViewModel)
-                //Dishes(recipeViewModel)
 
             }
         }
