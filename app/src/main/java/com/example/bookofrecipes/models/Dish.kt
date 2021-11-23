@@ -1,6 +1,7 @@
 package com.example.bookofrecipes.models
 
 import androidx.room.*
+import com.example.bookofrecipes.controllers.BookOfRecipes
 
 
 @Entity
@@ -11,13 +12,17 @@ data class Dish(
 
 ) {
 
-    private constructor(name: String, info: String, recipes: MutableList<Recipe>): this(name, info){
+    private constructor(name: String, info: String, recipes: MutableList<Recipe>) : this(
+        name,
+        info
+    ) {
         this.recipes = recipes
     }
 
     @PrimaryKey(autoGenerate = true)
     var dishId: Int = 0
-    @Ignore private var recipes: MutableList<Recipe> = mutableListOf()
+    @Ignore
+    private var recipes: MutableList<Recipe> = mutableListOf()
 
     private constructor(builder: Builder) :
             this(
@@ -35,20 +40,28 @@ data class Dish(
     }
 
     fun addRecipe(recipe: Recipe) {
-        TODO()
+        if (!recipes.contains(recipe)) recipes.add(recipe)
     }
 
     fun addRecipes(recipes: List<Recipe>) {
         this.recipes.addAll(recipes)
     }
 
-    fun removeRecipe(id: Int) {
-        TODO()
-    }
+    fun removeRecipe(id: Int) = recipes.removeIf{ it.dishId == id }
 
     fun updateRecipe(id: Int, recipe: Recipe) {
         TODO()
     }
+
+
+    fun getAllCuisine() = mutableSetOf<String>().apply {
+        recipes.forEach { recipe ->
+            this.add(recipe.cuisine)
+        }
+    }
+
+    fun getCuisineRecipes(cuisine: String) = recipes.filter { it.cuisine == cuisine }
+
 
     fun getRecipes() = recipes
 

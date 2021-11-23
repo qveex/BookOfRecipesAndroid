@@ -1,63 +1,95 @@
 package com.example.bookofrecipes.controllers
 
-import androidx.activity.viewModels
 import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.models.Dish
 import com.example.bookofrecipes.models.Ingredient
 import com.example.bookofrecipes.models.Recipe
-import com.example.bookofrecipes.viewmodel.RecipeViewModel
 
 object BookOfRecipes {
 
-    private val dishes: List<Dish> = mutableListOf(
-        Dish.build(
-            recipes = mutableListOf<Recipe>(Recipe.build(
-                mutableListOf<CookingStep>(),
-                mutableListOf<Ingredient>()
-            ) { cuisine = "Чеченская" }),
-            name = "Курица по чеченски"
-        ){  },
+    private val dishes: MutableList<Dish> = mutableListOf(
+        (Dish.build(
+            recipes = mutableListOf<Recipe>(
 
-        Dish.build(
-            recipes = mutableListOf<Recipe>(Recipe.build(
-                mutableListOf<CookingStep>(),
-                mutableListOf<Ingredient>()
-            ) { cuisine = "Татарская" }),
-            name = "Утка по татарски"
-        ){  },
+                Recipe.build(
+                    "Курица по Чеченски",
+                    mutableListOf<CookingStep>(),
+                    mutableListOf<Ingredient>()
+                ) { cuisine = "Чеченская" },
 
-        Dish.build(
-            recipes = mutableListOf<Recipe>(Recipe.build(
-                mutableListOf<CookingStep>(),
-                mutableListOf<Ingredient>()
-            ) {  }),
-            name = "Кекс Безысходность"
-        ){  },
+                Recipe.build(
+                    "Курица по Таджикски",
+                    mutableListOf<CookingStep>(),
+                    mutableListOf<Ingredient>()
+                ) { cuisine = "Таджикская" },
 
-        Dish.build(
-            recipes = mutableListOf<Recipe>(Recipe.build(
-                mutableListOf<CookingStep>(),
-                mutableListOf<Ingredient>()
-            ) {  }),
-            name = "Пицца из батона"
-        ){  },
+                Recipe.build(
+                    "Курица по Американски",
+                    mutableListOf<CookingStep>(),
+                    mutableListOf<Ingredient>()
+                ) { cuisine = "Американская" },
+
+                Recipe.build(
+                    "Курица по Африкански",
+                    mutableListOf<CookingStep>(),
+                    mutableListOf<Ingredient>()
+                ) { cuisine = "Африканская" }
+            ),
+
+            name = "Запеченая курица"
+
+        ) {
+            info = "Вкусная запеченая курица с мягкой золотистой корочкой"
+        }).apply { dishId = 0 },
+
+        (Dish.build(
+            recipes = mutableListOf<Recipe>(
+                Recipe.build(
+                    "Утка по Татарски",
+                    mutableListOf<CookingStep>(),
+                    mutableListOf<Ingredient>()
+                ) { cuisine = "Татарская" }),
+            name = "Жаренная утка"
+        ) { }).apply { dishId = 1 },
+
+        (Dish.build(
+            recipes = mutableListOf<Recipe>(
+                Recipe.build(
+                    "Кекс Безысходность",
+                    mutableListOf<CookingStep>(),
+                    mutableListOf<Ingredient>()
+                ) { }),
+            name = "Кекс"
+        ) { }).apply { dishId = 2 },
+
+        (Dish.build(
+            recipes = mutableListOf<Recipe>(
+                Recipe.build(
+                    "Пицца из батона",
+                    mutableListOf<CookingStep>(),
+                    mutableListOf<Ingredient>()
+                ) { }),
+            name = "Пицца"
+        ) { }).apply { dishId = 3 },
     )
 
+
+
+
     fun addDish(dish: Dish) {
-        TODO()
+        if (!dishes.contains(dish)) dishes.add(dish)
     }
 
-    fun removeDish(id: Int) {
-        TODO()
-    }
+    fun removeDish(id: Int) = dishes.removeIf{ it.dishId == id }
 
     fun updateDish(id: Int, dish: Dish) {
         TODO()
     }
 
-    fun findDishes(name: String): List<Dish> {
-        TODO()
-    }
+    fun findDishes(name: String) = dishes.filter { it.name == name }
+
+
+    fun findDishById(id: Int) = dishes.find { it.dishId == id }!!
 
     fun findDishes(ingredients: List<Ingredient>): List<Dish> {
         TODO()
@@ -65,9 +97,14 @@ object BookOfRecipes {
 
     fun getAllDishes() = dishes
 
-    /*fun getAllCuisine() = mutableSetOf<String>().apply {
-        dishes.forEach { this.add(it.cuisine) }
-    }*/
+    fun getAllCuisine() = mutableSetOf<String>().apply {
+        dishes.forEach { dish ->
+            dish.getRecipes().forEach { recipe ->
+                this.add(recipe.cuisine)
+            }
+        }
+    }
+
 
     //fun getDishes(cuisine: String) = dishes.filter { it.cuisine == cuisine }
 }

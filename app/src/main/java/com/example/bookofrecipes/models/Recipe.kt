@@ -19,6 +19,7 @@ data class Recipe(
     var dishId: Int,
 
     @Embedded val description: Description?,
+    val name: String,
     val cookingTime: Double,
     val cuisine: String,
     val cost: Double,
@@ -36,30 +37,32 @@ data class Recipe(
         steps: List<CookingStep>,
         ingredients: List<Ingredient>,
         description: Description?,
+        name: String,
         cookingTime: Double,
         cuisine: String,
         cost: Double, complexity:
         Byte, spicy: Byte
-    ): this(recipeId, dishId, description, cookingTime, cuisine, cost, complexity, spicy) {
+    ): this(recipeId, dishId, description, name, cookingTime, cuisine, cost, complexity, spicy) {
         this.steps = steps
         this.ingredients = ingredients
     }
 
     private constructor(builder: Builder) :
             this(
-                0, 0,
-                builder.steps, builder.ingredients,
-                builder.description, builder.cookingTime,
+                0, 0, builder.steps,
+                builder.ingredients, builder.description,
+                builder.name, builder.cookingTime,
                 builder.cuisine, builder.cost,
                 builder.complexity, builder.spicy
             )
 
     companion object {
         inline fun build(
+            name: String,
             steps: List<CookingStep>,
             ingredients: List<Ingredient>,
             block: Builder.() -> Unit
-        ) = Builder(steps, ingredients).apply(block).build()
+        ) = Builder(name, steps, ingredients).apply(block).build()
     }
 
     fun addStep(step: CookingStep) {
@@ -80,6 +83,7 @@ data class Recipe(
 
     class Builder(
 
+        val name: String,
         val steps: List<CookingStep>,
         val ingredients: List<Ingredient>
 

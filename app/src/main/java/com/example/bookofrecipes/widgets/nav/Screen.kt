@@ -4,6 +4,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
+const val DISH_ARGUMENT_KEY = "dishId"
+const val RECIPE_ARGUMENT_KEY = "recipeId"
+
+
 sealed class Screen(
     val route: String,
     val title: String,
@@ -27,15 +31,20 @@ sealed class Screen(
         icon = Icons.Default.Add
     )
 
+
     object Dish: Screen(
-        route = "dish",
+        route = "dish/{$DISH_ARGUMENT_KEY}",
         title = "Dish",
         icon = Icons.Default.Warning
-    )
+    ) {
+        fun passId(dishId: Int) = "dish/$dishId"
+    }
 
     object Recipe: Screen(
-        route = "recipe",
+        route = "recipe/{$RECIPE_ARGUMENT_KEY}",
         title = "Recipe",
         icon = Icons.Default.Warning
-    )
+    ) {
+        fun passId(recipeId: Int) = "recipe/$recipeId"
+    }
 }

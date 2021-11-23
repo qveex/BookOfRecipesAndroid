@@ -12,8 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -24,13 +22,13 @@ import com.example.bookofrecipes.ui.theme.Typography
 import com.example.bookofrecipes.widgets.nav.Screen
 
 @Composable
-fun DishItem(dish: Dish, navController: NavController) {
+fun RecipeItem(recipe: Recipe, navController: NavController) {
 
 
     Surface(
         modifier = Modifier
             .clickable {
-                navController.navigate(route = Screen.Dish.passId(dish.dishId))
+                //navController.navigate(route = Screen.Dish.passId(dish.dishId))
             }
             .background(Color.DarkGray),
         color = Color.DarkGray
@@ -38,14 +36,12 @@ fun DishItem(dish: Dish, navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(116.dp))
+                .border(width = 1.dp, color = Color.White, shape = RoundedCornerShape(116.dp))
                 .padding(14.dp)
-            //verticalAlignment = Alignment.CenterVertically,
-            //horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
             Text(
-                text = dish.name,
+                text = recipe.name,
                 fontSize = Typography.subtitle1.fontSize,
                 color = Color.White,
             )
@@ -59,14 +55,14 @@ fun DishItem(dish: Dish, navController: NavController) {
 
 @Composable
 @Preview
-fun DishItemPreview() {
+fun RecipeItemPreview() {
 
     DishItem(
         dish = Dish.build(
             recipes = mutableListOf<Recipe>(),
             name = "Утка по татарски"
-        ) {  },
+        ) { },
         navController = rememberNavController()
     )
-
 }
+
