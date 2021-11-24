@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bookofrecipes.controllers.BookOfRecipes
@@ -69,10 +70,10 @@ fun AddDishScreen(navController: NavController) {
 
             DishDivider()
 
-            var recipeTime by remember { mutableStateOf("") }
-            var recipeCost by remember { mutableStateOf("") }
-            var complexity by remember { mutableStateOf("") }
-            var recipeSpicy by remember { mutableStateOf("") }
+            var recipeTime by remember { mutableStateOf("0") }
+            var recipeCost by remember { mutableStateOf("0") }
+            var recipeComplexity by remember { mutableStateOf("0") }
+            var recipeSpicy by remember { mutableStateOf("0") }
             var recipeCuisine by remember { mutableStateOf("") }
             var recipeName by remember { mutableStateOf("") }
 
@@ -109,8 +110,8 @@ fun AddDishScreen(navController: NavController) {
                     modifier = Modifier
                         .padding(12.dp)
                         .width(80.dp),
-                    value = complexity,
-                    onValueChange = { complexity = it },
+                    value = recipeComplexity,
+                    onValueChange = { recipeComplexity = it },
                     label = { Text("Diff") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
@@ -168,10 +169,18 @@ fun AddDishScreen(navController: NavController) {
                                     steps = mutableListOf(),
                                     ingredients = mutableListOf(),
 
-                                    ) { cuisine = recipeCuisine }.apply { recipeId = Random.nextInt(0, 10000) }
+                                    ) {
+                                    cuisine = recipeCuisine
+                                    cost = if (recipeCost.isDigitsOnly() && recipeCost != "") recipeCost.toInt() else 0
+                                    complexity = if (recipeComplexity.isDigitsOnly() && recipeComplexity != "") recipeComplexity.toByte() else 0
+                                    spicy = if (recipeSpicy.isDigitsOnly() && recipeSpicy != "") recipeSpicy.toByte() else 0
+                                    cookingTime = if (recipeTime.isDigitsOnly() && recipeTime != "") recipeTime.toInt() else 0
+                                }.apply { recipeId = Random.nextInt(0, 10000) }
                             ),
                             name = recipeName
-                        ) {}.apply { dishId = BookOfRecipes.getAllDishes().size }
+                        ) {
+                            info = dishInfo
+                        }.apply { dishId = BookOfRecipes.getAllDishes().size }
                     )
                     navController.navigate(Screen.Dishes.route)
                 },

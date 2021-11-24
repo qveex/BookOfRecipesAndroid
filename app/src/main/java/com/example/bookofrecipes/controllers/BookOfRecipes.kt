@@ -46,11 +46,23 @@ object BookOfRecipes {
             recipes = mutableListOf<Recipe>(
                 Recipe.build(
                     "Утка по Татарски",
-                    mutableListOf<CookingStep>(),
+                    mutableListOf<CookingStep>(
+                        CookingStep(0, 4, "Помыть", "Поместите утку в ванну и тщательно промойте ее под душем", 10),
+                        CookingStep(1, 4, "Мариновать", "Обработайте утку специями и соусами по вкусу и оставьте ее в таком состоянии на некоторое время для более яркого вкуса", 60),
+                        CookingStep(2, 4, "Запечь", "Предварительно разогрейте духовку до 451 градуса по Френгейту и поместите туда утку на протвени, ожидайте", 60),
+                        CookingStep(3, 4, "Разрезать", "После полной готовности, достаньте утку из духовки и разрежте ее на куски удобного размера", 15),
+                        CookingStep(4, 4, "Приятного аппетита!", "Разложите по тарелкам с овощами по желанию", 5),
+                    ),
                     mutableListOf<Ingredient>()
-                ) { cuisine = "Татарская" }.apply { recipeId = 4 }),
-            name = "Жаренная утка"
-        ) { }).apply { dishId = 1 },
+                ) {
+                    cuisine = "Татарская"
+                    complexity = 4
+                    cost = 750
+                    cookingTime = 150
+                    spicy = 1
+                }.apply { recipeId = 4 }),
+            name = "Запеченая утка"
+        ) { info = "Утка вкусная шикарная румяная" }).apply { dishId = 1 },
 
         (Dish.build(
             recipes = mutableListOf<Recipe>(
@@ -90,7 +102,18 @@ object BookOfRecipes {
         if (!dishes.contains(dish)) dishes.add(dish)
     }
 
-    fun removeDish(id: Int) = dishes.removeIf { it.dishId == id }
+    fun removeDish(dishId: Int): Boolean {
+        dishes.forEach { dish ->
+            if (dish.dishId == dishId) {
+                dish.getRecipes().forEach { recipe ->
+                    removeFavorite(recipeId = recipe.recipeId)
+                }
+                dishes.remove(dish)
+                return true
+            }
+        }
+        return false
+    }//= dishes.removeIf { it.dishId == id }
 
     fun updateDish(id: Int, dish: Dish) {
         TODO()
@@ -120,6 +143,7 @@ object BookOfRecipes {
 
     /* @it should be deleted after connecting db!!! */
     /* @don't use it please!!! */
+    /* @this is about all recipe's functions now */
     fun getRecipe(recipeId: Int): Recipe? {
 
         dishes.forEach { dish ->
@@ -129,5 +153,11 @@ object BookOfRecipes {
         return null
     }
 
-    //fun getDishes(cuisine: String) = dishes.filter { it.cuisine == cuisine }
+    fun removeRecipe(recipeId: Int): Boolean {
+        removeFavorite(recipeId = recipeId)
+        dishes.forEach { dish ->
+            if (dish.getRecipes().removeIf{ it.recipeId == recipeId }) return true
+        }
+        return false
+    }
 }

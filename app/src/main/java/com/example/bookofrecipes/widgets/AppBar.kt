@@ -6,15 +6,14 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
@@ -173,6 +172,47 @@ fun DishAppBar(onDeleteClicked: () -> Unit, title: String) {
     )
 }
 
+
+@Composable
+fun RecipeAppBar(
+    onDeleteClicked: () -> Unit,
+    onHeartClicked: () -> Unit,
+    title: String
+) {
+    TopAppBar(
+        backgroundColor = Color.DarkGray,
+        title = {
+            Text(
+                color = Color.White,
+                text = title,
+            )
+        },
+        actions = {
+
+            IconButton(
+                onClick = { onHeartClicked() }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Favorite,
+                    contentDescription = "Favorite Icon",
+                    tint = Color.White
+                )
+            }
+
+            IconButton(
+                onClick = { onDeleteClicked() },
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Delete Icon",
+                    tint = Color.White
+                )
+            }
+        }
+    )
+}
+
+
 @Composable
 @Preview
 fun DefaultAppBarPreview() {
@@ -187,5 +227,16 @@ fun AppBarPreview() {
         onTextChange = {},
         onCloseClicked = {},
         onSearchClicked = {}
+    )
+}
+
+
+@Composable
+@Preview
+fun RecipeAppBarPreview() {
+    RecipeAppBar(
+        onDeleteClicked = {  },
+        onHeartClicked = {  },
+        title = "Recipe"
     )
 }

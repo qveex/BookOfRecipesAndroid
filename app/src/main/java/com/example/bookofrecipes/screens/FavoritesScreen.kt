@@ -25,14 +25,20 @@ fun FavoritesScreen(navController: NavController) {
             .fillMaxSize()
             .padding(0.dp, 0.dp, 0.dp, 50.dp)
     ) {
-        LazyColumn(
-            contentPadding = PaddingValues(all = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
+        Column() {
+            
+            TitleRowTextCenter(text = "Favorite recipes:")
+            
+            LazyColumn(
+                contentPadding = PaddingValues(all = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
 
-            items(items = BookOfRecipes.getFavorites()) { recipe ->
-                RecipeItem(recipe = recipe, navController = navController)
-            }
+                items(items = BookOfRecipes.getFavorites()) { recipe ->
+                    RecipeItem(recipe = recipe, navController = navController)
+                }
+
+            }   
         }
     }
 }

@@ -20,9 +20,9 @@ data class Recipe(
 
     @Embedded val description: Description?,
     val name: String,
-    val cookingTime: Double,
+    val cookingTime: Int,
     val cuisine: String,
-    val cost: Double,
+    val cost: Int,
     val complexity: Byte,
     val spicy: Byte,
     //val image: Image
@@ -38,10 +38,11 @@ data class Recipe(
         ingredients: List<Ingredient>,
         description: Description?,
         name: String,
-        cookingTime: Double,
+        cookingTime: Int,
         cuisine: String,
-        cost: Double, complexity:
-        Byte, spicy: Byte
+        cost: Int,
+        complexity: Byte,
+        spicy: Byte
     ): this(recipeId, dishId, description, name, cookingTime, cuisine, cost, complexity, spicy) {
         this.steps = steps
         this.ingredients = ingredients
@@ -90,9 +91,9 @@ data class Recipe(
     ) {
 
         var description: Description? = null
-        var cookingTime: Double = .0
+        var cookingTime: Int = 0
         var cuisine: String = "Другая"
-        var cost: Double = .0
+        var cost: Int = 0
         var complexity: Byte = 0
         var spicy: Byte = 0
         //var image: Image? = null

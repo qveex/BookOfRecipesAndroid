@@ -24,7 +24,7 @@ data class CookingStep(
 
     val title: String,
     val info: String,
-    val time: String,
+    val time: Int,
     //val image: Image
 
 )
