@@ -2,62 +2,79 @@ package com.example.bookofrecipes.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bookofrecipes.controllers.BookOfRecipes
+import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.models.Dish
+import com.example.bookofrecipes.models.Ingredient
 import com.example.bookofrecipes.models.Recipe
 import com.example.bookofrecipes.ui.theme.Typography
-import com.example.bookofrecipes.widgets.DishItem
+import com.example.bookofrecipes.widgets.DishAppBar
 import com.example.bookofrecipes.widgets.RecipeItem
+import com.example.bookofrecipes.widgets.nav.Screen
 
 @ExperimentalFoundationApi
 @Composable
 fun DishScreen(navController: NavController, dishId: Int) {
-    
+
     val dish = BookOfRecipes.findDishById(dishId)
-    
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.DarkGray)
-            //.padding(16.dp)
-    ) {
 
-        Column(
-
-        ) {
-
-            TitleRowTextCenter(dish.name)
-            if (dish.info != "") {
-                RowTextCenter(text = "Dish description")
-                RowTextCenter(text = dish.info)
+    if (dish != null) {
+        Scaffold(
+            topBar = {
+                DishAppBar(
+                    onDeleteClicked = {
+                        navController.navigate(Screen.Dishes.route)
+                        BookOfRecipes.removeDish(dishId)
+                    },
+                    title = dish.name
+                )
             }
-            DishDivider()
-            RowTextCenter(text = "Recipes")
-            DishDivider()
-            RecipeList(dish = dish, navController = navController)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.DarkGray)
+                //.padding(16.dp)
+            ) {
 
+                Column(
+
+                ) {
+
+                    TitleRowTextCenter(dish.name)
+                    if (dish.info != "") {
+                        RowTextCenter(text = "Dish description")
+                        RowTextCenter(text = dish.info)
+                    }
+                    DishDivider()
+                    RowTextCenter(text = "Recipes")
+                    DishDivider()
+                    RecipeList(dish = dish, navController = navController)
+
+                }
+
+            }
         }
-        
+    } else {
+        Box(contentAlignment = Alignment.Center) {
+            Text(text = "Oops, it's NullPointerException")
+        }
     }
 
 }
@@ -76,9 +93,10 @@ fun RecipeList(dish: Dish, navController: NavController) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.LightGray)
+                        .background(Color.LightGray, shape = CircleShape)
                         .padding(6.dp),
-                        //.border(width = 1.dp, color = Color.White, shape = RoundedCornerShape(128.dp)),
+                    //.border(width = 1.dp, color = Color.White, shape = RoundedCornerShape(128.dp)),
+                    textAlign = TextAlign.Center,
                     text = "$cuisine кухня",
                     color = Color.DarkGray
                 )

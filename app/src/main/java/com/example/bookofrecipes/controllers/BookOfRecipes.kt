@@ -102,7 +102,7 @@ object BookOfRecipes {
         else getAllDishes()
 
 
-    fun findDishById(id: Int) = dishes.find { it.dishId == id }!!
+    fun findDishById(id: Int) = dishes.find { it.dishId == id }
 
     fun findDishes(ingredients: List<Ingredient>): List<Dish> {
         TODO()
@@ -120,19 +120,13 @@ object BookOfRecipes {
 
     /* @it should be deleted after connecting db!!! */
     /* @don't use it please!!! */
-    fun getRecipe(recipeId: Int): Recipe {
-
-        val recipe = Recipe.build(
-            "Кажется, тут был null",
-            mutableListOf<CookingStep>(),
-            mutableListOf<Ingredient>()
-        ) { cuisine = "Null'овская" }
+    fun getRecipe(recipeId: Int): Recipe? {
 
         dishes.forEach { dish ->
             val f = dish.getRecipes().find { it.recipeId == recipeId }
             if (f != null) return f
         }
-        return recipe
+        return null
     }
 
     //fun getDishes(cuisine: String) = dishes.filter { it.cuisine == cuisine }

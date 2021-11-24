@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -145,6 +146,31 @@ fun SearchAppBar(
         )
     }
 
+}
+
+
+@Composable
+fun DishAppBar(onDeleteClicked: () -> Unit, title: String) {
+    TopAppBar(
+        backgroundColor = Color.DarkGray,
+        title = {
+            Text(
+                color = Color.White,
+                text = title
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = { onDeleteClicked() }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Delete Icon",
+                    tint = Color.White
+                )
+            }
+        }
+    )
 }
 
 @Composable
