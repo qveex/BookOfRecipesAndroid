@@ -45,22 +45,8 @@ fun DishScreen(navController: NavController, dishId: Int) {
         Column(
 
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp, 16.dp, 8.dp, 8.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Top,
-            ) {
-                Text(
-                    text = dish.name,
-                    fontSize = Typography.h5.fontSize,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    maxLines = 1
-                )
-            }
 
+            TitleRowTextCenter(dish.name)
             if (dish.info != "") {
                 RowTextCenter(text = "Dish description")
                 RowTextCenter(text = dish.info)
@@ -101,6 +87,26 @@ fun RecipeList(dish: Dish, navController: NavController) {
                 RecipeItem(recipe = recipe, navController = navController)
             }
         }
+    }
+}
+
+
+@Composable
+fun TitleRowTextCenter(text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp, 16.dp, 8.dp, 8.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Top,
+    ) {
+        Text(
+            text = text,
+            fontSize = Typography.h5.fontSize,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            maxLines = 1
+        )
     }
 }
 

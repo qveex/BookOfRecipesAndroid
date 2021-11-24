@@ -48,7 +48,7 @@ object BookOfRecipes {
                     "Утка по Татарски",
                     mutableListOf<CookingStep>(),
                     mutableListOf<Ingredient>()
-                ) { cuisine = "Татарская" }),
+                ) { cuisine = "Татарская" }.apply { recipeId = 4 }),
             name = "Жаренная утка"
         ) { }).apply { dishId = 1 },
 
@@ -58,7 +58,7 @@ object BookOfRecipes {
                     "Кекс Безысходность",
                     mutableListOf<CookingStep>(),
                     mutableListOf<Ingredient>()
-                ) { }),
+                ) { }.apply { recipeId = 5 }),
             name = "Кекс"
         ) { }).apply { dishId = 2 },
 
@@ -68,23 +68,21 @@ object BookOfRecipes {
                     "Пицца из батона",
                     mutableListOf<CookingStep>(),
                     mutableListOf<Ingredient>()
-                ) { }),
+                ) { }.apply { recipeId = 6 }),
             name = "Пицца"
         ) { }).apply { dishId = 3 },
     )
 
-    private val favorites: MutableList<Int> = mutableListOf(
+    private val favorites: MutableSet<Int> = mutableSetOf(
         1, 2
     )
 
     fun getFavorites() = mutableListOf<Recipe>().apply {
-
         dishes.forEach { dish ->
             this.addAll(dish.getRecipes().filter { favorites.contains(it.recipeId) })
         }
-
     }
-
+    fun isFav(recipeId: Int) = favorites.contains(recipeId)
     fun addFavorite(recipeId: Int) = favorites.add(recipeId)
     fun removeFavorite(recipeId: Int) = favorites.removeIf { it == recipeId }
 
