@@ -46,6 +46,7 @@ fun RecipeScreen(navController: NavController, recipeId: Int) {
                         navController.navigate(Screen.Dishes.route)
                         BookOfRecipes.removeRecipe(recipeId)
                     },
+                    onBackClicked = { navController.popBackStack() },
                     onHeartClicked = { BookOfRecipes.addFavorite(recipeId) },
                     title = recipe.name
                 )

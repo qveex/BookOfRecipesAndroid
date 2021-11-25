@@ -149,9 +149,20 @@ fun SearchAppBar(
 
 
 @Composable
-fun DishAppBar(onDeleteClicked: () -> Unit, title: String) {
+fun DishAppBar(onDeleteClicked: () -> Unit, onBackClicked: () -> Unit, title: String) {
     TopAppBar(
         backgroundColor = Color.DarkGray,
+        navigationIcon = {
+            IconButton(
+                onClick = { onBackClicked() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back Icon",
+                    tint = Color.White
+                )
+            }
+        },
         title = {
             Text(
                 color = Color.White,
@@ -177,6 +188,7 @@ fun DishAppBar(onDeleteClicked: () -> Unit, title: String) {
 fun RecipeAppBar(
     onDeleteClicked: () -> Unit,
     onHeartClicked: () -> Unit,
+    onBackClicked: () -> Unit,
     title: String
 ) {
     TopAppBar(
@@ -186,6 +198,17 @@ fun RecipeAppBar(
                 color = Color.White,
                 text = title,
             )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = { onBackClicked() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back Icon",
+                    tint = Color.White
+                )
+            }
         },
         actions = {
 
@@ -235,8 +258,19 @@ fun AppBarPreview() {
 @Preview
 fun RecipeAppBarPreview() {
     RecipeAppBar(
-        onDeleteClicked = {  },
-        onHeartClicked = {  },
+        onDeleteClicked = {},
+        onBackClicked = {},
+        onHeartClicked = {},
         title = "Recipe"
+    )
+}
+
+@Composable
+@Preview
+fun DishAppBarPreview() {
+    DishAppBar(
+        onDeleteClicked = {},
+        onBackClicked = {},
+        title = "Dish"
     )
 }

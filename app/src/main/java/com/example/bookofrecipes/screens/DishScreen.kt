@@ -1,11 +1,13 @@
 package com.example.bookofrecipes.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -13,11 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.bookofrecipes.R
 import com.example.bookofrecipes.controllers.BookOfRecipes
 import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.models.Dish
@@ -42,6 +50,7 @@ fun DishScreen(navController: NavController, dishId: Int) {
                         navController.navigate(Screen.Dishes.route)
                         BookOfRecipes.removeDish(dishId)
                     },
+                    onBackClicked = { navController.popBackStack() },
                     title = dish.name
                 )
             }
@@ -54,14 +63,20 @@ fun DishScreen(navController: NavController, dishId: Int) {
             ) {
 
                 Column(
-
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    TitleRowTextCenter(dish.name)
-                    if (dish.info != "") {
-                        RowTextCenter(text = "Dish description")
-                        RowTextCenter(text = dish.info)
-                    }
+                    Image(
+                        modifier = Modifier
+                            .size(300.dp, 200.dp)
+                            .clip(RoundedCornerShape(50.dp))
+                            .padding(12.dp),
+                        contentScale = ContentScale.Fit,
+                        painter = painterResource(id = R.drawable.im),
+                        contentDescription = "Test im"
+                    )
+                    //TitleRowTextCenter(dish.name)
+                    RowTextCenter(text = dish.info)
                     DishDivider()
                     RowTextCenter(text = "Recipes")
                     DishDivider()
@@ -150,4 +165,12 @@ fun DishDivider() {
             .height(1.dp)
             .fillMaxWidth()
     )
+}
+
+
+@ExperimentalFoundationApi
+@Composable
+@Preview
+fun DishScreenPreview() {
+    DishScreen(navController = rememberNavController(), dishId = 1)
 }
