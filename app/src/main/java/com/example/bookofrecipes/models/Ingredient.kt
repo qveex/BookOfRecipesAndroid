@@ -4,32 +4,28 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = [Index(value = ["name"], unique = true)])
 data class Ingredient (
 
-    @PrimaryKey(autoGenerate = true)
-    var ingredientId: Int,
     var name: String,
     var number: Double,
     var measure: String
 
 ) {
+
     fun getIng(): String = ""
+
+    override fun toString(): String {
+        return "Ingredient(name=$name, number=$number, measure=$measure)"
+    }
 }
 
 
-
-/*
 @Entity(indices = [Index(value = ["name"], unique = true)])
-abstract class Ingredient {
+data class IngredientEntity(
 
+    val name: String
+
+) {
     @PrimaryKey(autoGenerate = true)
-    var ingredientId: Int = 0
-    var name: String = ""
-    var number: Double = .0
-    var measure: String = ""
-
-    abstract fun getIng(): String
-
+    var ingredientId = 0
 }
- */

@@ -78,4 +78,7 @@ data class Dish(
 
     }
 
+    override fun toString(): String {
+        return "Dish(name=$name, info=$info, id=$dishId)"
+    }
 }

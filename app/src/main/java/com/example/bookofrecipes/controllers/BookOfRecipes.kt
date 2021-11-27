@@ -53,7 +53,11 @@ object BookOfRecipes {
                         CookingStep(3, 4, "Разрезать", "После полной готовности, достаньте утку из духовки и разрежте ее на куски удобного размера", 15),
                         CookingStep(4, 4, "Приятного аппетита!", "Разложите по тарелкам с овощами по желанию", 5),
                     ),
-                    mutableListOf<Ingredient>()
+                    mutableListOf<Ingredient>(
+                        Ingredient("Утка", 1.0, "шт"),
+                        Ingredient("Масло", 50.0, "г"),
+                        Ingredient("Соус", 50.0, "г")
+                    )
                 ) {
                     cuisine = "Татарская"
                     complexity = 4

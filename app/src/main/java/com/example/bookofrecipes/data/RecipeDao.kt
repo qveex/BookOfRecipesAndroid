@@ -5,64 +5,70 @@ import androidx.room.*
 import com.example.bookofrecipes.models.*
 
 @Dao
-abstract class RecipeDao {
-
-    suspend fun insertDish(dish: Dish) {
-        _insertDish(dish)
-        dish.getRecipes().forEach { recipe ->
-
-            recipe.dishId = dish.dishId
-            recipe.getSteps().forEach {  step -> step.recipeId = recipe.recipeId }
-
-
-            _insertRecipe(recipe)
-            _insertSteps(recipe.getSteps())
-            recipe.getIngredients().forEach { ing -> _insertRecipeIngredientCrossRef(RecipeIngredientCrossRef(recipe.recipeId, ing.ingredientId)) }
-
-        }
-    }
+interface RecipeDao {
 
     @Transaction
-    @Query("SELECT ingredientId FROM Ingredient WHERE name = :name")
-    abstract fun getIngId(name: String): LiveData<Int>
+    @Query("SELECT * FROM IngredientEntity")
+    fun getIngredients(): LiveData<List<IngredientEntity>>
+
+    @Transaction
+    @Query("SELECT ingredientId FROM IngredientEntity WHERE name = :name")
+    fun getIngId(name: String): LiveData<Int>
+
+    @Transaction
+    @Query("SELECT * FROM Dish WHERE name = :name")
+    fun getDishesByName(name: String): LiveData<List<Dish>>
 
     @Transaction
     @Query("SELECT * FROM Dish")
-    abstract fun getDishes(): LiveData<List<Dish>>
+    fun getDishes(): LiveData<List<Dish>>
+
+    @Transaction
+    @Query("SELECT * FROM Dish WHERE dishId = :dishId")
+    fun getDish(dishId: Int): LiveData<Dish>
+
+    @Transaction
+    @Query("SELECT * FROM Recipe")
+    fun getRecipes(): LiveData<List<Recipe>>
+
+    @Transaction
+    @Query("SELECT * FROM Recipe WHERE recipeId = :recipeId")
+    fun getRecipe(recipeId: Int): LiveData<Recipe>
+
+    @Transaction
+    @Query("SELECT * FROM CookingStep")
+    fun getSteps(): LiveData<List<CookingStep>>
+
+    @Transaction
+    @Query("SELECT * FROM RecipeIngredientCrossRef WHERE recipeId = :recipeId")
+    fun getRecipeIngredientsRef(recipeId: Int): LiveData<List<RecipeIngredientCrossRef>>
+
+    @Transaction
+    @Query("SELECT name FROM IngredientEntity WHERE ingredientId IN (:ingsId)")
+    fun getRecipeIngredients(ingsId: List<Int>): LiveData<List<String>>
+
+
+
+
+
+
+
+
+
 
     @Insert
-    abstract suspend fun _insertDish(dish: Dish)
+    suspend fun insertDish(dish: Dish)
 
     @Insert
-    abstract suspend fun _insertRecipe(recipe: Recipe)
+    suspend fun insertRecipe(recipe: Recipe)
 
     @Insert
-    abstract suspend fun _insertSteps(steps: List<CookingStep>)
+    suspend fun insertSteps(steps: List<CookingStep>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun _insertIngredients(ingredient: List<Ingredient>)
+    suspend fun insertIngredients(ingredient: List<IngredientEntity>)
 
     @Insert
-    abstract suspend fun _insertRecipeIngredientCrossRef(ref: RecipeIngredientCrossRef)
-
-    @Transaction
-    @Query("SELECT * FROM Recipe")
-    abstract fun getRecipesWithIngredients(): LiveData<List<RecipeWithIngredients>>
-
-    @Transaction
-    @Query("SELECT * FROM Ingredient")
-    abstract fun getIngredientsWithRecipes(): LiveData<List<IngredientWithRecipes>>
-
-    @Transaction
-    @Query("SELECT * FROM Dish")
-    abstract fun getDishesWithRecipes(): LiveData<List<DishWithRecipes>>
-
-    @Transaction
-    @Query("SELECT * FROM Recipe")
-    abstract fun getRecipesWithSteps(): LiveData<List<RecipeWithSteps>>
-
-    @Transaction
-    @Query("SELECT * FROM Recipe")
-    abstract fun getRecipes(): LiveData<List<RecipesWithAllTheOthers>>
+    suspend fun insertRecipeIngredientCrossRef(ref: RecipeIngredientCrossRef)
 
 }

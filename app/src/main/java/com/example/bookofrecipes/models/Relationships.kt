@@ -2,30 +2,6 @@ package com.example.bookofrecipes.models
 
 import androidx.room.*
 
-data class DishWithRecipes(
-
-    @Embedded val dish: Dish,
-    @Relation(
-        parentColumn = "dishId",
-        entityColumn = "dishId"
-    )
-    val recipes: List<Recipe>
-
-)
-
-
-data class RecipeWithSteps(
-
-    @Embedded val recipe: Recipe,
-    @Relation(
-        parentColumn = "recipeId",
-        entityColumn = "recipeId"
-    )
-    val steps: List<CookingStep>
-
-)
-
-
 @Entity(
     primaryKeys = ["recipeId", "ingredientId"],
     foreignKeys =
@@ -38,7 +14,7 @@ data class RecipeWithSteps(
         ),
         ForeignKey(
             onDelete = ForeignKey.CASCADE,
-            entity = Ingredient::class,
+            entity = IngredientEntity::class,
             parentColumns = ["ingredientId"],
             childColumns = ["ingredientId"]
         )
@@ -47,52 +23,9 @@ data class RecipeWithSteps(
 data class RecipeIngredientCrossRef(
 
     val recipeId: Int,
-    val ingredientId: Int
+    val ingredientId: Int,
+
+    val number: Int,
+    val measure: String
 
 )
-
-
-data class RecipeWithIngredients(
-
-    @Embedded val recipe: Recipe,
-    @Relation(
-        parentColumn = "recipeId",
-        entityColumn = "ingredientId",
-        associateBy = Junction(RecipeIngredientCrossRef::class)
-    )
-    val ingredients: List<Ingredient>
-)
-
-
-data class IngredientWithRecipes(
-
-    @Embedded val ingredient: Ingredient,
-    @Relation(
-        parentColumn = "ingredientId",
-        entityColumn = "recipeId",
-        associateBy = Junction(RecipeIngredientCrossRef::class)
-    )
-    val recipes: List<Recipe>
-
-)
-
-
-
-data class RecipesWithAllTheOthers(
-
-    @Embedded val recipe: Recipe,
-    @Relation(
-        parentColumn = "recipeId",
-        entityColumn = "recipeId"
-    )
-    val steps: List<CookingStep>,
-    @Relation(
-        parentColumn = "recipeId",
-        entityColumn = "ingredientId",
-        associateBy = Junction(RecipeIngredientCrossRef::class)
-    )
-    val ingredients: List<Ingredient>
-
-)
-
-

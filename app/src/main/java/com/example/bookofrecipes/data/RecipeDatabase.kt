@@ -1,8 +1,6 @@
 package com.example.bookofrecipes.data
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.bookofrecipes.models.*
 
@@ -15,7 +13,7 @@ import com.example.bookofrecipes.models.*
         Recipe::class,
         CookingStep::class,
         RecipeIngredientCrossRef::class,
-        Ingredient::class],
+        IngredientEntity::class],
     version = 1,
     exportSchema = false)
 

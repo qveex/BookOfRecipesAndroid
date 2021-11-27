@@ -14,10 +14,6 @@ import androidx.room.*
 )
 data class Recipe(
 
-    @PrimaryKey(autoGenerate = true)
-    var recipeId: Int,
-    var dishId: Int,
-
     @Embedded val description: Description?,
     val name: String,
     val cookingTime: Int,
@@ -29,11 +25,14 @@ data class Recipe(
 
 ) {
 
+    @PrimaryKey(autoGenerate = true)
+    var recipeId: Int = 0
+    var dishId: Int = 0
+
     @Ignore private var steps: List<CookingStep> = emptyList()
     @Ignore private var ingredients: List<Ingredient> = emptyList()
 
     private constructor(
-        recipeId: Int, dishId: Int,
         steps: List<CookingStep>,
         ingredients: List<Ingredient>,
         description: Description?,
@@ -43,14 +42,14 @@ data class Recipe(
         cost: Int,
         complexity: Byte,
         spicy: Byte
-    ): this(recipeId, dishId, description, name, cookingTime, cuisine, cost, complexity, spicy) {
+    ): this(description, name, cookingTime, cuisine, cost, complexity, spicy) {
         this.steps = steps
         this.ingredients = ingredients
     }
 
     private constructor(builder: Builder) :
             this(
-                0, 0, builder.steps,
+                builder.steps,
                 builder.ingredients, builder.description,
                 builder.name, builder.cookingTime,
                 builder.cuisine, builder.cost,
@@ -102,4 +101,7 @@ data class Recipe(
 
     }
 
+    override fun toString(): String {
+        return "Recipe(id=$recipeId, dId=$dishId, description=$description, name=$name, time=$cookingTime, cuisine=$cuisine, cost=$cost, complexity=$complexity, spicy=$spicy, ings=$ingredients, steps=$steps)"
+    }
 }
