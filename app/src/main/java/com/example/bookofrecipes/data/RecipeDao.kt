@@ -60,6 +60,9 @@ interface RecipeDao {
     suspend fun insertDish(dish: Dish)
 
     @Insert
+    suspend fun insertFavorite(fav: Favorite)
+
+    @Insert
     suspend fun insertRecipe(recipe: Recipe)
 
     @Insert
