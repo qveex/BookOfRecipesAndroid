@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Ingredient (
 
     var name: String,
-    var number: Double,
+    var number: Int,
     var measure: String
 
 ) {
@@ -28,4 +28,8 @@ data class IngredientEntity(
 ) {
     @PrimaryKey(autoGenerate = true)
     var ingredientId = 0
+
+    override fun toString(): String {
+        return "Ing(id=$ingredientId, name=$name)"
+    }
 }

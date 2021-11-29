@@ -18,7 +18,6 @@ class RecipeViewModel @ViewModelInject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-
     // States for search widget in DishListScreen
     private val _searchWidgetState: MutableState<SearchWidgetState> =
         mutableStateOf(value = SearchWidgetState.CLOSED)
@@ -41,38 +40,66 @@ class RecipeViewModel @ViewModelInject constructor(
     val ingredients = repository.getIngredients()
     val recipes = repository.getRecipes()
 
-    private var lastInsertDish = 0
-    private var lastInsertRecipe = 0
+    fun steps(recipeId: Int) = repository.getSteps(recipeId)
+
+    //val steps = repository.getSteps()
+    //val recipes = repository.getRecipes()
 
     fun insertDish(dish: Dish) {
         viewModelScope.launch(Dispatchers.IO) {
-            lastInsertDish = repository.insertDish(dish).toInt()
+            repository.insertDish(dish)
         }
     }
 
-    fun insertIngredients(ingredients: List<IngredientEntity>) {
+    fun insertIngredient(ingredient: IngredientEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertIngredients(ingredients)
+            repository.insertIngredient(ingredient)
         }
     }
 
     fun insertRecipe(recipe: Recipe) {
         viewModelScope.launch(Dispatchers.IO) {
-            recipe.dishId = lastInsertDish
-            lastInsertRecipe = repository.insertRecipe(recipe).toInt()
+            recipe.dishId = repository.getLastInsertDish()
+            repository.insertRecipe(recipe)
         }
     }
 
-    fun insertSteps(steps: List<CookingStep>) {
+    fun insertStep(step: CookingStep) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertSteps(steps)
+            step.recipeId = repository.getLastInsertRecipe()
+            repository.insertStep(step)
         }
     }
 
     fun insertAll(dish: Dish) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            val dishId = repository.insertDish(dish).toInt()
+            repository.insertDish(dish)
+            dish.getRecipes().forEach { recipe ->
+                recipe.dishId = repository.getLastInsertDish()
+                repository.insertRecipe(recipe)
+
+                recipe.getIngredients().forEach { ing ->
+                    repository.insertIngredient(IngredientEntity(ing.name))
+                    repository.insertRecIngRef(RecipeIngredientCrossRef(
+                        repository.getLastInsertRecipe(),
+                        repository.getLastInsertIng(),
+                        ing.number,
+                        ing.measure
+                    ))
+                }
+
+                /*recipe.getSteps().forEach { step ->
+                    step.recipeId = repository.getLastInsertRecipe()
+                    repository.insertStep(step)
+                }*/
+
+
+
+                //val steps = recipe.getSteps().onEach { it.recipeId = repository.getLastInsertRecipe() }
+                //repository.insertSteps(steps)
+
+            }
 
         }
     }

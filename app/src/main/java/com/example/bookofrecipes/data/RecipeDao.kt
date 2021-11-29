@@ -36,8 +36,8 @@ interface RecipeDao {
     fun getRecipe(recipeId: Int): LiveData<Recipe>
 
     @Transaction
-    @Query("SELECT * FROM CookingStep")
-    fun getSteps(): LiveData<List<CookingStep>>
+    @Query("SELECT * FROM CookingStep WHERE recipeId = :recipeId")
+    fun getSteps(recipeId: Int): LiveData<List<CookingStep>>
 
     @Transaction
     @Query("SELECT * FROM RecipeIngredientCrossRef WHERE recipeId = :recipeId")
@@ -66,10 +66,13 @@ interface RecipeDao {
     suspend fun insertRecipe(recipe: Recipe): Long
 
     @Insert
+    suspend fun insertStep(step: CookingStep)
+
+    @Insert
     suspend fun insertSteps(steps: List<CookingStep>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertIngredients(ingredient: List<IngredientEntity>)
+    suspend fun insertIngredient(ingredient: IngredientEntity): Long
 
     @Insert
     suspend fun insertRecipeIngredientCrossRef(ref: RecipeIngredientCrossRef)
