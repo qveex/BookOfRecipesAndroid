@@ -102,6 +102,6 @@ data class Recipe(
     }
 
     override fun toString(): String {
-        return "Recipe(id=$recipeId, dId=$dishId, description=$description, name=$name, time=$cookingTime, cuisine=$cuisine, cost=$cost, complexity=$complexity, spicy=$spicy, ings=$ingredients, steps=$steps)"
+        return "Recipe(id=$recipeId, dishId=$dishId, description=$description, name=$name, time=$cookingTime, cuisine=$cuisine, cost=$cost, complexity=$complexity, spicy=$spicy, ings=$ingredients, steps=$steps)"
     }
 }

@@ -64,9 +64,9 @@ object BookOfRecipes {
                     cost = 750
                     cookingTime = 150
                     spicy = 1
-                }.apply { recipeId = 4 }),
+                }.apply { /*recipeId = 4*/ }),
             name = "Запеченая утка"
-        ) { info = "Утка вкусная шикарная румяная" }).apply { dishId = 1 },
+        ) { info = "Утка вкусная шикарная румяная" }).apply { /*dishId = 1*/ },
 
         (Dish.build(
             recipes = mutableListOf<Recipe>(

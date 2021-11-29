@@ -57,13 +57,13 @@ interface RecipeDao {
 
 
     @Insert
-    suspend fun insertDish(dish: Dish)
+    suspend fun insertDish(dish: Dish): Long
 
     @Insert
     suspend fun insertFavorite(fav: Favorite)
 
     @Insert
-    suspend fun insertRecipe(recipe: Recipe)
+    suspend fun insertRecipe(recipe: Recipe): Long
 
     @Insert
     suspend fun insertSteps(steps: List<CookingStep>)
