@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE,
             entity = Recipe::class,
             parentColumns = ["recipeId"],
-            childColumns = ["stepId"]
+            childColumns = ["recipeId"]
         )
     ]
 )

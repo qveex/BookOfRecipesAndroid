@@ -8,7 +8,7 @@ import androidx.room.*
             onDelete = ForeignKey.CASCADE,
             entity = Dish::class,
             parentColumns = ["dishId"],
-            childColumns = ["recipeId"]
+            childColumns = ["dishId"]
         )
     ]
 )
