@@ -42,6 +42,15 @@ fun NavGraph(navController: NavHostController, viewModel: RecipeViewModel) {
         }
 
         composable(
+            route = Screen.AddRecipe.route,
+            arguments = listOf(navArgument("dishId") {
+                type = NavType.IntType
+            })
+        ) {
+            AddRecipeScreen(viewModel, navController = navController, it.arguments!!.getInt("dishId"))
+        }
+
+        composable(
             route = Screen.Recipe.route,
             arguments = listOf(navArgument("recipeId") {
                 type = NavType.IntType

@@ -3,19 +3,19 @@ package com.example.bookofrecipes.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -27,10 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bookofrecipes.R
 import com.example.bookofrecipes.controllers.BookOfRecipes
-import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.models.Dish
-import com.example.bookofrecipes.models.Ingredient
-import com.example.bookofrecipes.models.Recipe
 import com.example.bookofrecipes.ui.theme.Typography
 import com.example.bookofrecipes.widgets.DishAppBar
 import com.example.bookofrecipes.widgets.RecipeItem
@@ -44,6 +41,7 @@ fun DishScreen(navController: NavController, dishId: Int) {
 
     if (dish != null) {
         Scaffold(
+            Modifier.padding(0.dp,0.dp,0.dp,50.dp),
             topBar = {
                 DishAppBar(
                     onDeleteClicked = {
@@ -75,11 +73,18 @@ fun DishScreen(navController: NavController, dishId: Int) {
                         painter = painterResource(id = R.drawable.im),
                         contentDescription = "Test im"
                     )
-                    //TitleRowTextCenter(dish.name)
                     RowTextCenter(text = dish.info)
                     DishDivider()
                     RowTextCenter(text = "Recipes")
                     DishDivider()
+                    IconButton(
+                        onClick = { navController.navigate(route = Screen.AddRecipe.passId(dishId)) },
+                        modifier = Modifier
+                            .then(Modifier.size(50.dp))
+                            .border(1.dp, Color.White, shape = CircleShape)
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "add recipe icon", tint = Color.White)
+                    }
                     RecipeList(dish = dish, navController = navController)
 
                 }
@@ -98,7 +103,6 @@ fun DishScreen(navController: NavController, dishId: Int) {
 @Composable
 fun RecipeList(dish: Dish, navController: NavController) {
     LazyColumn(
-        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 50.dp),
         contentPadding = PaddingValues(all = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -172,5 +176,5 @@ fun DishDivider() {
 @Composable
 @Preview
 fun DishScreenPreview() {
-    DishScreen(navController = rememberNavController(), dishId = 1)
+    DishScreen(navController = rememberNavController(), dishId = 0)
 }

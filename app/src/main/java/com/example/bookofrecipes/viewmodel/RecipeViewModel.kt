@@ -42,8 +42,6 @@ class RecipeViewModel @ViewModelInject constructor(
 
     fun steps(recipeId: Int) = repository.getSteps(recipeId)
 
-    //val steps = repository.getSteps()
-    //val recipes = repository.getRecipes()
 
     fun insertDish(dish: Dish) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -96,8 +94,8 @@ class RecipeViewModel @ViewModelInject constructor(
 
 
 
-                //val steps = recipe.getSteps().onEach { it.recipeId = repository.getLastInsertRecipe() }
-                //repository.insertSteps(steps)
+                val steps = recipe.getSteps().onEach { it.recipeId = repository.getLastInsertRecipe() }
+                repository.insertSteps(steps)
 
             }
 

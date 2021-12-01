@@ -33,6 +33,13 @@ sealed class Screen(
         icon = Icons.Default.Add
     )
 
+    object AddRecipe: Screen(
+        route = "addRecipe/{$DISH_ARGUMENT_KEY}",
+        title = "AddRecipe",
+        icon = Icons.Default.Add
+    ) {
+        fun passId(dishId: Int) = "addRecipe/$dishId"
+    }
 
     object Dish: Screen(
         route = "dish/{$DISH_ARGUMENT_KEY}",
