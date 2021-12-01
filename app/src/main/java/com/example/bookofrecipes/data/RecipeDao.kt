@@ -3,6 +3,7 @@ package com.example.bookofrecipes.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.bookofrecipes.models.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RecipeDao {
@@ -20,8 +21,8 @@ interface RecipeDao {
     fun getDishesByName(name: String): LiveData<List<Dish>>
 
     @Transaction
-    @Query("SELECT * FROM Dish")
-    fun getDishes(): LiveData<List<Dish>>
+    @Query("SELECT * FROM Dish WHERE name LIKE '%' || :text || '%'")
+    fun getDishes(text: String?): Flow<List<Dish>>
 
     @Transaction
     @Query("SELECT * FROM Dish WHERE dishId = :dishId")
@@ -71,7 +72,7 @@ interface RecipeDao {
     @Insert
     suspend fun insertSteps(steps: List<CookingStep>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIngredient(ingredient: IngredientEntity): Long
 
     @Insert

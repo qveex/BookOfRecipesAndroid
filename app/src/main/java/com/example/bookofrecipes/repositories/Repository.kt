@@ -3,6 +3,7 @@ package com.example.bookofrecipes.repositories
 import androidx.lifecycle.LiveData
 import com.example.bookofrecipes.data.RecipeDao
 import com.example.bookofrecipes.models.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -18,13 +19,15 @@ class Repository @Inject constructor(
 
 
 
-    fun getAllDishes(): LiveData<List<Dish>> = recipeDao.getDishes()
+    fun getDishes(text: String?): Flow<List<Dish>> = recipeDao.getDishes(text)
 
     fun getIngredients(): LiveData<List<IngredientEntity>> = recipeDao.getIngredients()
 
     fun getRecipes() = recipeDao.getRecipes()
 
     fun getSteps(recipeId: Int) = recipeDao.getSteps(recipeId = recipeId)
+
+    fun getIngId(name: String) = recipeDao.getIngId(name)
 
     suspend fun insertDish(dish: Dish) {
         lastInsertDish = recipeDao.insertDish(dish).toInt()

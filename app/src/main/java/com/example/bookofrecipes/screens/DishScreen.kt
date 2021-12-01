@@ -80,15 +80,14 @@ fun DishScreen(navController: NavController, dishId: Int) {
                     IconButton(
                         onClick = { navController.navigate(route = Screen.AddRecipe.passId(dishId)) },
                         modifier = Modifier
+                            .padding(0.dp, 5.dp, 0.dp, 0.dp)
                             .then(Modifier.size(50.dp))
                             .border(1.dp, Color.White, shape = CircleShape)
                     ) {
                         Icon(Icons.Default.Add, contentDescription = "add recipe icon", tint = Color.White)
                     }
                     RecipeList(dish = dish, navController = navController)
-
                 }
-
             }
         }
     } else {
@@ -114,7 +113,6 @@ fun RecipeList(dish: Dish, navController: NavController) {
                         .fillMaxWidth()
                         .background(Color.LightGray, shape = CircleShape)
                         .padding(6.dp),
-                    //.border(width = 1.dp, color = Color.White, shape = RoundedCornerShape(128.dp)),
                     textAlign = TextAlign.Center,
                     text = "$cuisine кухня",
                     color = Color.DarkGray

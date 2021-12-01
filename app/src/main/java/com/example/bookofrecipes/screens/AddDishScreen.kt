@@ -14,11 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.bookofrecipes.models.Dish
+import com.example.bookofrecipes.viewmodel.RecipeViewModel
+import com.example.bookofrecipes.widgets.nav.Screen
 
 @Composable
-fun AddDishScreen(navController: NavController) {
+fun AddDishScreen(navController: NavController, viewModel: RecipeViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +54,7 @@ fun AddDishScreen(navController: NavController) {
                     .fillMaxWidth(),
                 value = dishInfo,
                 leadingIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {  }) {
                         Icon(imageVector = Icons.Default.Info, contentDescription = "Info")
                     }
                 },
@@ -58,6 +62,14 @@ fun AddDishScreen(navController: NavController) {
                 label = { Text("Info") },
                 maxLines = 7
 
+            )
+
+            OutlinedAddButton(
+                text = "create!",
+                onClicked = {
+                    viewModel.insertDish(Dish(dishName, dishInfo))
+                    navController.navigate(Screen.Dishes.route)
+                }
             )
 
 
@@ -69,5 +81,5 @@ fun AddDishScreen(navController: NavController) {
 @Composable
 @Preview
 fun PreviewAddDish() {
-    AddDishScreen(rememberNavController())
+    //AddDishScreen(rememberNavController())
 }

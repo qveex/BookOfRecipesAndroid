@@ -21,7 +21,7 @@ fun NavGraph(navController: NavHostController, viewModel: RecipeViewModel) {
     ) {
 
         composable(route = Screen.Dishes.route) {
-            ListDishScreen(recipeViewModel = viewModel, navController = navController)
+            ListDishScreen(viewModel, navController = navController)
         }
 
         composable(route = Screen.Favorites.route) {
@@ -29,7 +29,7 @@ fun NavGraph(navController: NavHostController, viewModel: RecipeViewModel) {
         }
 
         composable(route = Screen.AddDish.route) {
-            AddDishScreen(navController = navController)
+            AddDishScreen(navController = navController, viewModel = viewModel)
         }
 
         composable(

@@ -11,6 +11,7 @@ import com.example.bookofrecipes.models.*
 import com.example.bookofrecipes.repositories.Repository
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 
@@ -36,10 +37,11 @@ class RecipeViewModel @ViewModelInject constructor(
     }
 
 
-    val dishes = repository.getAllDishes()
+    val dishes = repository.getDishes(searchTextState.value)
     val ingredients = repository.getIngredients()
     val recipes = repository.getRecipes()
 
+    fun dishes(text: String) = repository.getDishes(text)
     fun steps(recipeId: Int) = repository.getSteps(recipeId)
 
 
@@ -55,16 +57,36 @@ class RecipeViewModel @ViewModelInject constructor(
         }
     }
 
-    fun insertRecipe(recipe: Recipe) {
+    fun insertRecipeIngredients(ingredients: List<Ingredient>, recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            recipe.dishId = repository.getLastInsertDish()
+            ingredients.forEach { ing ->
+                val v = repository.getIngId(ing.name).value
+                val ingId = if (v == null) {
+                    repository.insertIngredient(IngredientEntity(ing.name))
+                    repository.getLastInsertIng()
+                } else v
+                repository.insertRecIngRef(
+                    RecipeIngredientCrossRef(
+                        recipeId,
+                        0 ,
+                        ing.number,
+                        ing.measure
+                    )
+                )
+            }
+        }
+    }
+
+    fun insertRecipe(recipe: Recipe, dishId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            recipe.dishId = dishId
             repository.insertRecipe(recipe)
         }
     }
 
-    fun insertStep(step: CookingStep) {
+    fun insertStep(step: CookingStep, recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            step.recipeId = repository.getLastInsertRecipe()
+            step.recipeId = recipeId
             repository.insertStep(step)
         }
     }
@@ -86,13 +108,6 @@ class RecipeViewModel @ViewModelInject constructor(
                         ing.measure
                     ))
                 }
-
-                /*recipe.getSteps().forEach { step ->
-                    step.recipeId = repository.getLastInsertRecipe()
-                    repository.insertStep(step)
-                }*/
-
-
 
                 val steps = recipe.getSteps().onEach { it.recipeId = repository.getLastInsertRecipe() }
                 repository.insertSteps(steps)
