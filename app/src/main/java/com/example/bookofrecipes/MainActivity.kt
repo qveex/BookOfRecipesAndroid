@@ -38,28 +38,6 @@ class MainActivity : ComponentActivity() {
             BookOfRecipesTheme(true) {
 
                 MainScreen(recipeViewModel = recipeViewModel)
-                /*Column() {
-
-                    Button(
-                        onClick = { recipeViewModel.insertAll(BookOfRecipes.getAllDishes()[1]) }
-                    ) {
-
-                    }
-                }*/
-
-                /*recipeViewModel.dishes.observe(this, {
-                    Log.i("DataBase", "dishes " + it.toString())
-                })*/
-                recipeViewModel.recipes.observe(this, {
-                    Log.i("DataBase", "recipes $it")
-                })
-                recipeViewModel.allsteps().observe(this, {
-                    Log.i("DataBase", "steps $it")
-                })
-                recipeViewModel.ingredients.observe(this, {
-                    Log.i("DataBase", "ings $it")
-                })
-
 
             }
         }

@@ -1,9 +1,7 @@
 package com.example.bookofrecipes.repositories
 
-import androidx.lifecycle.LiveData
 import com.example.bookofrecipes.data.RecipeDao
 import com.example.bookofrecipes.models.*
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -16,6 +14,8 @@ class Repository @Inject constructor(
     fun getLastInsertDish() = lastInsertDish
     fun getLastInsertRecipe() = lastInsertRecipe
     fun getLastInsertIng() = lastInsertIng
+
+
 
 
 
@@ -33,28 +33,44 @@ class Repository @Inject constructor(
 
     fun getSteps(recipeId: Int) = recipeDao.getSteps(recipeId = recipeId)
 
-    fun getAllSteps() = recipeDao.getAllSteps()
+    fun getFavorites(favs: List<Int>) = recipeDao.getFavorites(favs)
+
+    fun getFavsId() = recipeDao.getFavId()
 
     fun getIngId(name: String) = recipeDao.getIngId(name)
 
-    suspend fun insertDish(dish: Dish) {
-        lastInsertDish = recipeDao.insertDish(dish).toInt()
-    }
 
-    suspend fun insertIngredient(ingredient: IngredientEntity) {
-        lastInsertIng = recipeDao.insertIngredient(ingredient).toInt()
-    }
 
-    suspend fun insertRecipe(recipe: Recipe) {
-        lastInsertRecipe = recipeDao.insertRecipe(recipe).toInt()
-    }
+
+
+
+
+
+    suspend fun insertDish(dish: Dish) { lastInsertDish = recipeDao.insertDish(dish).toInt() }
+
+    suspend fun insertIngredient(ingredient: IngredientEntity) { lastInsertIng = recipeDao.insertIngredient(ingredient).toInt() }
+
+    suspend fun insertRecipe(recipe: Recipe) { lastInsertRecipe = recipeDao.insertRecipe(recipe).toInt() }
 
     suspend fun insertFavorite(favorite: Favorite) = recipeDao.insertFavorite(favorite)
 
-    suspend fun insertRecIngRef(ref: RecipeIngredientCrossRef) =
-        recipeDao.insertRecipeIngredientCrossRef(ref)
+    suspend fun insertRecIngRef(ref: RecipeIngredientCrossRef) = recipeDao.insertRecipeIngredientCrossRef(ref)
 
     suspend fun insertStep(step: CookingStep) = recipeDao.insertStep(step)
 
     suspend fun insertSteps(steps: List<CookingStep>) = recipeDao.insertSteps(steps)
+
+
+
+
+
+
+
+
+    suspend fun deleteDish(dishId: Int) = recipeDao.deleteDish(dishId)
+
+    suspend fun deleteRecipe(recipeId: Int) = recipeDao.deleteRecipe(recipeId)
+
+    suspend fun deleteFavorite(recipeId: Int) = recipeDao.deleteFavorite(recipeId)
+
 }

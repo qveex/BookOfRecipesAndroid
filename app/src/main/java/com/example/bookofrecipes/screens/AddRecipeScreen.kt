@@ -86,14 +86,7 @@ fun AddRecipeScreen(
                             .padding(12.dp)
                             .width(80.dp),
                         value = recipeTime,
-                        onValueChange = {
-                            if (it.length <= MAX_INT_LENGTH && it.isDigitsOnly())
-                                if (it.toInt() >= 0)
-                                    recipeTime = it
-                            else
-                                Toast.makeText(context, "fields is not correct!", Toast.LENGTH_SHORT)
-                                    .show()
-                        },
+                        onValueChange = { recipeTime = it },
                         label = { Text("Time") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
@@ -106,14 +99,7 @@ fun AddRecipeScreen(
                             .padding(12.dp)
                             .width(80.dp),
                         value = recipeCost,
-                        onValueChange = {
-                            if (it.length <= MAX_INT_LENGTH && it.isDigitsOnly())
-                                if (it.toInt() >= 0)
-                                    recipeCost = it
-                            else
-                                Toast.makeText(context, "fields is not correct!", Toast.LENGTH_SHORT)
-                                    .show()
-                        },
+                        onValueChange = { recipeCost = it },
                         label = { Text("Cost") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
@@ -128,14 +114,7 @@ fun AddRecipeScreen(
                             .padding(12.dp)
                             .width(80.dp),
                         value = recipeComplexity,
-                        onValueChange = {
-                            if (it.length <= MAX_BYTE_LENGTH && it.isDigitsOnly())
-                                if (it.toByte() in 0..5)
-                                    recipeComplexity = it
-                            else
-                                Toast.makeText(context, "fields is not correct!", Toast.LENGTH_SHORT)
-                                    .show()
-                        },
+                        onValueChange = { recipeComplexity = it },
                         label = { Text("Diff") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
@@ -149,14 +128,7 @@ fun AddRecipeScreen(
                             .padding(12.dp)
                             .width(80.dp),
                         value = recipeSpicy,
-                        onValueChange = {
-                            if (it.length <= MAX_BYTE_LENGTH && it.isDigitsOnly())
-                                if (it.toByte() in 0..5)
-                                    recipeSpicy = it
-                            else
-                                Toast.makeText(context, "fields is not correct!", Toast.LENGTH_SHORT)
-                                    .show()
-                        },
+                        onValueChange = { recipeSpicy = it },
                         label = { Text("Spicy") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
@@ -170,20 +142,23 @@ fun AddRecipeScreen(
                 OutlinedAddButton(
                     text = "create!",
                     onClicked = {
-                        viewModel.insertRecipe(
-                            Recipe(
-                                Description(.0, .0, .0, .0),
-                                recipeName,
-                                recipeTime.toInt(),
-                                recipeCuisine,
-                                recipeCost.toInt(),
-                                recipeComplexity.toByte(),
-                                recipeSpicy.toByte()
-                            ),
-                            dishId = dishId
-                        )
-                        Toast.makeText(context, "Recipe was created!", Toast.LENGTH_SHORT).show()
-                        navController.navigate(Screen.Dish.passId(dishId))
+                        if (isValid(recipeTime, recipeCost, recipeComplexity, recipeSpicy)) {
+                            viewModel.insertRecipe(
+                                Recipe(
+                                    Description(.0, .0, .0, .0),
+                                    recipeName,
+                                    recipeTime.toInt(),
+                                    recipeCuisine,
+                                    recipeCost.toInt(),
+                                    recipeComplexity.toByte(),
+                                    recipeSpicy.toByte()
+                                ),
+                                dishId = dishId
+                            )
+                            Toast.makeText(context, "Recipe was created!", Toast.LENGTH_SHORT).show()
+                            navController.navigate(Screen.Dish.passId(dishId))
+                        }
+                        else Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
                     }
                 )
 
@@ -194,6 +169,12 @@ fun AddRecipeScreen(
 
 
 }
+
+fun isValid(time: String, cost: String, complexity: String, spicy: String) =
+    if (time.isDigitsOnly() && cost.isDigitsOnly() && complexity.isDigitsOnly() && spicy.isDigitsOnly())
+        time.toInt() in 0..999 && cost.toInt() in 0..999 && complexity.toInt() in 0..5 && spicy.toInt() in 0..5
+    else false
+
 
 @Composable
 fun OutlinedAddButton(text: String, onClicked: () -> Unit) {

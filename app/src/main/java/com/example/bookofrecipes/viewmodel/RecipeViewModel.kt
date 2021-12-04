@@ -5,13 +5,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.bookofrecipes.models.*
 import com.example.bookofrecipes.repositories.Repository
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 
@@ -37,16 +36,26 @@ class RecipeViewModel @ViewModelInject constructor(
     }
 
 
-    val dishes = repository.getAllDishes(searchTextState.value)
-    val ingredients = repository.getIngredients().asLiveData()
-    val recipes = repository.getAllRecipes()
 
-    fun dishes(text: String) = repository.getAllDishes(text)
-    fun dish(dishId: Int) = repository.getDish(dishId)
-    fun recipe(recipeId: Int) = repository.getRecipe(recipeId)
-    fun steps(recipeId: Int) = repository.getSteps(recipeId)
-    fun recipes(dishId: Int) = repository.getRecipes(dishId)
-    fun allsteps() = repository.getAllSteps()
+
+    fun recipes(dishId: Int): Flow<List<Recipe>> = repository.getRecipes(dishId)
+
+    fun dishes(text: String): Flow<List<Dish>> = repository.getAllDishes(text)
+
+    fun dish(dishId: Int): Flow<Dish> = repository.getDish(dishId)
+
+    fun recipe(recipeId: Int): Flow<Recipe> = repository.getRecipe(recipeId)
+
+    fun steps(recipeId: Int): Flow<List<CookingStep>> = repository.getSteps(recipeId)
+
+    fun favorites(favs: List<Int>): Flow<List<Recipe>> = repository.getFavorites(favs)
+
+    fun favoritesId(): Flow<List<Int>> = repository.getFavsId()
+
+
+
+
+
 
 
     fun insertDish(dish: Dish) {
@@ -64,7 +73,7 @@ class RecipeViewModel @ViewModelInject constructor(
     fun insertRecipeIngredients(ingredients: List<Ingredient>, recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             ingredients.forEach { ing ->
-                val v = repository.getIngId(ing.name).first()
+                val v = repository.getIngId(ing.name)
                 val ingId = if (v == null) {
                     repository.insertIngredient(IngredientEntity(ing.name))
                     repository.getLastInsertIng()
@@ -72,7 +81,7 @@ class RecipeViewModel @ViewModelInject constructor(
                 repository.insertRecIngRef(
                     RecipeIngredientCrossRef(
                         recipeId,
-                        0 ,
+                        0,
                         ing.number,
                         ing.measure
                     )
@@ -105,19 +114,47 @@ class RecipeViewModel @ViewModelInject constructor(
 
                 recipe.getIngredients().forEach { ing ->
                     repository.insertIngredient(IngredientEntity(ing.name))
-                    repository.insertRecIngRef(RecipeIngredientCrossRef(
-                        repository.getLastInsertRecipe(),
-                        repository.getLastInsertIng(),
-                        ing.number,
-                        ing.measure
-                    ))
+                    repository.insertRecIngRef(
+                        RecipeIngredientCrossRef(
+                            repository.getLastInsertRecipe(),
+                            repository.getLastInsertIng(),
+                            ing.number,
+                            ing.measure
+                        )
+                    )
                 }
 
-                val steps = recipe.getSteps().onEach { it.recipeId = repository.getLastInsertRecipe() }
+                val steps =
+                    recipe.getSteps().onEach { it.recipeId = repository.getLastInsertRecipe() }
                 repository.insertSteps(steps)
 
             }
 
+        }
+    }
+
+    fun insertFavorite(recipeId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertFavorite(Favorite(recipeId))
+        }
+    }
+
+
+    fun deleteDish(dishId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteDish(dishId)
+        }
+    }
+
+    fun deleteRecipe(recipeId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteRecipe(recipeId)
+        }
+    }
+
+    fun deleteFavorite(recipeId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteFavorite(recipeId)
         }
     }
 
