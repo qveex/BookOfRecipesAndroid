@@ -1,17 +1,17 @@
 package com.example.bookofrecipes.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.bookofrecipes.models.*
 import com.example.bookofrecipes.repositories.Repository
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -37,12 +37,16 @@ class RecipeViewModel @ViewModelInject constructor(
     }
 
 
-    val dishes = repository.getDishes(searchTextState.value)
-    val ingredients = repository.getIngredients()
-    val recipes = repository.getRecipes()
+    val dishes = repository.getAllDishes(searchTextState.value)
+    val ingredients = repository.getIngredients().asLiveData()
+    val recipes = repository.getAllRecipes()
 
-    fun dishes(text: String) = repository.getDishes(text)
+    fun dishes(text: String) = repository.getAllDishes(text)
+    fun dish(dishId: Int) = repository.getDish(dishId)
+    fun recipe(recipeId: Int) = repository.getRecipe(recipeId)
     fun steps(recipeId: Int) = repository.getSteps(recipeId)
+    fun recipes(dishId: Int) = repository.getRecipes(dishId)
+    fun allsteps() = repository.getAllSteps()
 
 
     fun insertDish(dish: Dish) {
@@ -60,7 +64,7 @@ class RecipeViewModel @ViewModelInject constructor(
     fun insertRecipeIngredients(ingredients: List<Ingredient>, recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             ingredients.forEach { ing ->
-                val v = repository.getIngId(ing.name).value
+                val v = repository.getIngId(ing.name).first()
                 val ingId = if (v == null) {
                     repository.insertIngredient(IngredientEntity(ing.name))
                     repository.getLastInsertIng()

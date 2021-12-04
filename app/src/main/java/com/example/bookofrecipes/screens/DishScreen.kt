@@ -13,6 +13,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,16 +30,20 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bookofrecipes.R
 import com.example.bookofrecipes.controllers.BookOfRecipes
 import com.example.bookofrecipes.models.Dish
+import com.example.bookofrecipes.models.Recipe
 import com.example.bookofrecipes.ui.theme.Typography
+import com.example.bookofrecipes.viewmodel.RecipeViewModel
 import com.example.bookofrecipes.widgets.DishAppBar
 import com.example.bookofrecipes.widgets.RecipeItem
 import com.example.bookofrecipes.widgets.nav.Screen
 
 @ExperimentalFoundationApi
 @Composable
-fun DishScreen(navController: NavController, dishId: Int) {
+fun DishScreen(navController: NavController, viewModel: RecipeViewModel, dishId: Int) {
 
-    val dish = BookOfRecipes.findDishById(dishId)
+    //val dish = BookOfRecipes.findDishById(dishId)
+    val dish by viewModel.dish(dishId).collectAsState(initial = null)
+    val recipes by viewModel.recipes(dishId).collectAsState(initial = emptyList())
 
     if (dish != null) {
         Scaffold(
@@ -49,7 +55,8 @@ fun DishScreen(navController: NavController, dishId: Int) {
                         BookOfRecipes.removeDish(dishId)
                     },
                     onBackClicked = { navController.popBackStack() },
-                    title = dish.name
+                    onAddClicked = { navController.navigate(route = Screen.AddRecipe.passId(dishId)) },
+                    title = dish!!.name
                 )
             }
         ) {
@@ -57,7 +64,6 @@ fun DishScreen(navController: NavController, dishId: Int) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.DarkGray)
-                //.padding(16.dp)
             ) {
 
                 Column(
@@ -73,20 +79,11 @@ fun DishScreen(navController: NavController, dishId: Int) {
                         painter = painterResource(id = R.drawable.im),
                         contentDescription = "Test im"
                     )
-                    RowTextCenter(text = dish.info)
+                    RowTextCenter(text = dish!!.info)
                     DishDivider()
                     RowTextCenter(text = "Recipes")
                     DishDivider()
-                    IconButton(
-                        onClick = { navController.navigate(route = Screen.AddRecipe.passId(dishId)) },
-                        modifier = Modifier
-                            .padding(0.dp, 5.dp, 0.dp, 0.dp)
-                            .then(Modifier.size(50.dp))
-                            .border(1.dp, Color.White, shape = CircleShape)
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = "add recipe icon", tint = Color.White)
-                    }
-                    RecipeList(dish = dish, navController = navController)
+                    RecipeList(recipes, navController = navController, viewModel)
                 }
             }
         }
@@ -100,13 +97,13 @@ fun DishScreen(navController: NavController, dishId: Int) {
 
 @ExperimentalFoundationApi
 @Composable
-fun RecipeList(dish: Dish, navController: NavController) {
+fun RecipeList(recipes: List<Recipe>, navController: NavController, viewModel: RecipeViewModel) {
+    //val items by viewModel.recipes(dish.dishId).collectAsState(initial = emptyList())
     LazyColumn(
         contentPadding = PaddingValues(all = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
-        dish.getAllCuisine().forEach { cuisine ->
+        /*dish.getAllCuisine().forEach { cuisine ->
             stickyHeader {
                 Text(
                     modifier = Modifier
@@ -118,9 +115,15 @@ fun RecipeList(dish: Dish, navController: NavController) {
                     color = Color.DarkGray
                 )
             }
-            items(items = dish.getCuisineRecipes(cuisine = cuisine)) { recipe ->
+            /*items(items = dish.getCuisineRecipes(cuisine = cuisine)) { recipe ->
+                RecipeItem(recipe = recipe, navController = navController)
+            }*/
+            items(items = items) { recipe ->
                 RecipeItem(recipe = recipe, navController = navController)
             }
+        }*/
+        items(items = recipes) { recipe ->
+            RecipeItem(recipe = recipe, navController = navController)
         }
     }
 }
@@ -174,5 +177,5 @@ fun DishDivider() {
 @Composable
 @Preview
 fun DishScreenPreview() {
-    DishScreen(navController = rememberNavController(), dishId = 0)
+    //DishScreen(navController = rememberNavController(), dishId = 0)
 }

@@ -54,7 +54,8 @@ fun ListDishScreen(viewModel: RecipeViewModel, navController: NavController) {
     ) {
 
         DishList(
-            dishes = dishes,//BookOfRecipes.findDishes(viewModel.searchTextState.value),
+            dishes = dishes,
+            //BookOfRecipes.findDishes(viewModel.searchTextState.value),
             navController = navController
         )
 

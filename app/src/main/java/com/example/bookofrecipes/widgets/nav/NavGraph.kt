@@ -38,7 +38,7 @@ fun NavGraph(navController: NavHostController, viewModel: RecipeViewModel) {
                 type = NavType.IntType
             })
         ) {
-            DishScreen(navController = navController, it.arguments!!.getInt("dishId"))
+            DishScreen(navController = navController, viewModel, it.arguments!!.getInt("dishId"))
         }
 
         composable(
@@ -56,7 +56,7 @@ fun NavGraph(navController: NavHostController, viewModel: RecipeViewModel) {
                 type = NavType.IntType
             })
         ) {
-            RecipeScreen(navController, it.arguments!!.getInt("recipeId"))
+            RecipeScreen(navController, viewModel, it.arguments!!.getInt("recipeId"))
         }
     }
 }

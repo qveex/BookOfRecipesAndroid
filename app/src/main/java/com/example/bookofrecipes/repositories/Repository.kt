@@ -19,13 +19,21 @@ class Repository @Inject constructor(
 
 
 
-    fun getDishes(text: String?): Flow<List<Dish>> = recipeDao.getDishes(text)
+    fun getAllDishes(text: String?) = recipeDao.getDishes(text)
 
-    fun getIngredients(): LiveData<List<IngredientEntity>> = recipeDao.getIngredients()
+    fun getDish(dishId: Int) = recipeDao.getDish(dishId)
 
-    fun getRecipes() = recipeDao.getRecipes()
+    fun getRecipe(recipeId: Int) = recipeDao.getRecipe(recipeId)
+
+    fun getIngredients() = recipeDao.getIngredients()
+
+    fun getAllRecipes() = recipeDao.getAllRecipes()
+
+    fun getRecipes(dishId: Int) = recipeDao.getRecipes(dishId)
 
     fun getSteps(recipeId: Int) = recipeDao.getSteps(recipeId = recipeId)
+
+    fun getAllSteps() = recipeDao.getAllSteps()
 
     fun getIngId(name: String) = recipeDao.getIngId(name)
 

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -149,7 +150,12 @@ fun SearchAppBar(
 
 
 @Composable
-fun DishAppBar(onDeleteClicked: () -> Unit, onBackClicked: () -> Unit, title: String) {
+fun DishAppBar(
+    onDeleteClicked: () -> Unit,
+    onBackClicked: () -> Unit,
+    onAddClicked: () -> Unit,
+    title: String
+) {
     TopAppBar(
         backgroundColor = Color.DarkGray,
         navigationIcon = {
@@ -166,10 +172,21 @@ fun DishAppBar(onDeleteClicked: () -> Unit, onBackClicked: () -> Unit, title: St
         title = {
             Text(
                 color = Color.White,
-                text = title
+                text = title,
+                fontWeight = FontWeight.Bold
             )
         },
         actions = {
+            IconButton(
+                onClick = { onAddClicked() }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add Icon",
+                    tint = Color.White
+                )
+            }
+
             IconButton(
                 onClick = { onDeleteClicked() }
             ) {
@@ -197,6 +214,7 @@ fun RecipeAppBar(
             Text(
                 color = Color.White,
                 text = title,
+                fontWeight = FontWeight.Bold
             )
         },
         navigationIcon = {
@@ -271,6 +289,7 @@ fun DishAppBarPreview() {
     DishAppBar(
         onDeleteClicked = {},
         onBackClicked = {},
+        onAddClicked = {},
         title = "Dish"
     )
 }

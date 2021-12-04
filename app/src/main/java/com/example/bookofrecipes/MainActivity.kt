@@ -12,6 +12,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.LiveData
 import com.example.bookofrecipes.controllers.BookOfRecipes
 import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.models.Dish
@@ -37,26 +38,26 @@ class MainActivity : ComponentActivity() {
             BookOfRecipesTheme(true) {
 
                 MainScreen(recipeViewModel = recipeViewModel)
-                Column() {
+                /*Column() {
 
                     Button(
                         onClick = { recipeViewModel.insertAll(BookOfRecipes.getAllDishes()[1]) }
                     ) {
 
                     }
-                }
+                }*/
 
-                recipeViewModel.dishes.observe(this, {
+                /*recipeViewModel.dishes.observe(this, {
                     Log.i("DataBase", "dishes " + it.toString())
-                })
+                })*/
                 recipeViewModel.recipes.observe(this, {
-                    Log.i("DataBase", "recipes " + it.toString())
+                    Log.i("DataBase", "recipes $it")
                 })
-                recipeViewModel.steps(1).observe(this, {
-                    Log.i("DataBase", "steps " + it.toString())
+                recipeViewModel.allsteps().observe(this, {
+                    Log.i("DataBase", "steps $it")
                 })
                 recipeViewModel.ingredients.observe(this, {
-                    Log.i("DataBase", "ings " + it.toString())
+                    Log.i("DataBase", "ings $it")
                 })
 
 

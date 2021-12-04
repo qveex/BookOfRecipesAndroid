@@ -10,15 +10,15 @@ interface RecipeDao {
 
     @Transaction
     @Query("SELECT * FROM IngredientEntity")
-    fun getIngredients(): LiveData<List<IngredientEntity>>
+    fun getIngredients(): Flow<List<IngredientEntity>>
 
     @Transaction
     @Query("SELECT ingredientId FROM IngredientEntity WHERE name = :name")
-    fun getIngId(name: String): LiveData<Int>
+    fun getIngId(name: String): Flow<Int>
 
     @Transaction
     @Query("SELECT * FROM Dish WHERE name = :name")
-    fun getDishesByName(name: String): LiveData<List<Dish>>
+    fun getDishesByName(name: String): Flow<List<Dish>>
 
     @Transaction
     @Query("SELECT * FROM Dish WHERE name LIKE '%' || :text || '%'")
@@ -26,27 +26,39 @@ interface RecipeDao {
 
     @Transaction
     @Query("SELECT * FROM Dish WHERE dishId = :dishId")
-    fun getDish(dishId: Int): LiveData<Dish>
+    fun getDish(dishId: Int): Flow<Dish>
+
+    @Transaction
+    @Query("SELECT * FROM Recipe WHERE dishId = :dishId")
+    fun getRecipes(dishId: Int): Flow<List<Recipe>>
 
     @Transaction
     @Query("SELECT * FROM Recipe")
-    fun getRecipes(): LiveData<List<Recipe>>
+    fun getAllRecipes(): LiveData<List<Recipe>>
+
+    @Transaction
+    @Query("SELECT * FROM Recipe WHERE dishId = :dishId and cuisine = :cuisine")
+    fun getCuisineRecipes(dishId: Int, cuisine: String): Flow<List<Recipe>>
 
     @Transaction
     @Query("SELECT * FROM Recipe WHERE recipeId = :recipeId")
-    fun getRecipe(recipeId: Int): LiveData<Recipe>
+    fun getRecipe(recipeId: Int): Flow<Recipe>
 
     @Transaction
     @Query("SELECT * FROM CookingStep WHERE recipeId = :recipeId")
-    fun getSteps(recipeId: Int): LiveData<List<CookingStep>>
+    fun getSteps(recipeId: Int): Flow<List<CookingStep>>
+
+    @Transaction
+    @Query("SELECT * FROM CookingStep")
+    fun getAllSteps(): LiveData<List<CookingStep>>
 
     @Transaction
     @Query("SELECT * FROM RecipeIngredientCrossRef WHERE recipeId = :recipeId")
-    fun getRecipeIngredientsRef(recipeId: Int): LiveData<List<RecipeIngredientCrossRef>>
+    fun getRecipeIngredientsRef(recipeId: Int): Flow<List<RecipeIngredientCrossRef>>
 
     @Transaction
     @Query("SELECT name FROM IngredientEntity WHERE ingredientId IN (:ingsId)")
-    fun getRecipeIngredients(ingsId: List<Int>): LiveData<List<String>>
+    fun getRecipeIngredients(ingsId: List<Int>): Flow<List<String>>
 
 
 
