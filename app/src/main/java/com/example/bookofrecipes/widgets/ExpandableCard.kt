@@ -43,7 +43,7 @@ fun ExpandableCard(
     descriptionFontWeight: FontWeight = FontWeight.Normal,
     descriptionMaxLines: Int = 4,
     shape: CornerBasedShape = Shapes.medium,
-    padding: Dp = 12.dp
+    padding: Dp = 8.dp
 ) {
 
     var expendedState by remember { mutableStateOf(false) }
@@ -122,7 +122,7 @@ fun ExpandableTextFieldCard(
     recipeId: Int,
     onAddClicked: (CookingStep, Int) -> Unit,
     shape: CornerBasedShape = Shapes.medium,
-    padding: Dp = 12.dp
+    padding: Dp = 8.dp
 ) {
 
     val context = LocalContext.current
@@ -187,7 +187,7 @@ fun ExpandableTextFieldCard(
             if (expendedState) {
                 TextField(
                     modifier = Modifier
-                        .padding(0.dp, 12.dp, 0.dp, 0.dp)
+                        .padding(0.dp, 8.dp, 0.dp, 0.dp)
                         .fillMaxSize(),
                     maxLines = 5,
                     value = stepInfo,
@@ -197,7 +197,7 @@ fun ExpandableTextFieldCard(
                             onClick = {
                                 if (isInt(stepTime) && stepTitle.isNotEmpty()) {
                                     onAddClicked(
-                                        CookingStep(stepTitle, stepInfo, stepTime.toInt()),
+                                        CookingStep(stepTitle, stepInfo, stepTime.toInt(), 0),
                                         recipeId
                                     )
                                     stepTitle = ""
@@ -219,7 +219,7 @@ fun ExpandableTextFieldCard(
 }
 
 fun isInt(text: String) =
-    if (text.isDigitsOnly()) text.toInt() in 0..998
+    if (text.isDigitsOnly()) text.toInt() in 0..999
     else false
 
 @ExperimentalMaterialApi

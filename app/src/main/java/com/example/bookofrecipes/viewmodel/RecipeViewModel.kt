@@ -11,6 +11,7 @@ import com.example.bookofrecipes.repositories.Repository
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
 
 
@@ -45,6 +46,8 @@ class RecipeViewModel @ViewModelInject constructor(
     fun dish(dishId: Int): Flow<Dish> = repository.getDish(dishId)
 
     fun recipe(recipeId: Int): Flow<Recipe> = repository.getRecipe(recipeId)
+
+    fun recipeTime(recipeId: Int): Flow<Int> = repository.getRecipeTime(recipeId)
 
     fun steps(recipeId: Int): Flow<List<CookingStep>> = repository.getSteps(recipeId)
 
@@ -100,6 +103,7 @@ class RecipeViewModel @ViewModelInject constructor(
     fun insertStep(step: CookingStep, recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             step.recipeId = recipeId
+            step.number = 1
             repository.insertStep(step)
         }
     }
@@ -155,6 +159,12 @@ class RecipeViewModel @ViewModelInject constructor(
     fun deleteFavorite(recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteFavorite(recipeId)
+        }
+    }
+
+    fun deleteStep(stepId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteStep(stepId)
         }
     }
 

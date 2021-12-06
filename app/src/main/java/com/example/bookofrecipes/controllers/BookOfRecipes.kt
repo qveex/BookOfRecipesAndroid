@@ -8,7 +8,7 @@ import com.example.bookofrecipes.models.Recipe
 object BookOfRecipes {
 
     private val dishes: MutableList<Dish> = mutableListOf(
-        (Dish.build(
+        /*(Dish.build(
             recipes = mutableListOf<Recipe>(
 
                 Recipe.build(
@@ -86,7 +86,7 @@ object BookOfRecipes {
                     mutableListOf<Ingredient>()
                 ) { }.apply { recipeId = 6 }),
             name = "Пицца"
-        ) { }).apply { dishId = 3 },
+        ) { }).apply { dishId = 3 },*/
     )
 
     private val favorites: MutableSet<Int> = mutableSetOf(

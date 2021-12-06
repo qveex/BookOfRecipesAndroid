@@ -33,6 +33,8 @@ class Repository @Inject constructor(
 
     fun getSteps(recipeId: Int) = recipeDao.getSteps(recipeId = recipeId)
 
+    fun getRecipeTime(recipeId: Int) = recipeDao.getRecipeTime(recipeId)
+
     fun getFavorites(favs: List<Int>) = recipeDao.getFavorites(favs)
 
     fun getFavsId() = recipeDao.getFavId()
@@ -73,4 +75,5 @@ class Repository @Inject constructor(
 
     suspend fun deleteFavorite(recipeId: Int) = recipeDao.deleteFavorite(recipeId)
 
+    suspend fun deleteStep(stepId: Int) = recipeDao.deleteStep(stepId)
 }

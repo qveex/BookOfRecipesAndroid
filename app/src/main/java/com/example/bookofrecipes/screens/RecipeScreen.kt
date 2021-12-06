@@ -1,5 +1,6 @@
 package com.example.bookofrecipes.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,9 +32,9 @@ import com.example.bookofrecipes.widgets.nav.Screen
 fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recipeId: Int) {
 
     val recipe by viewModel.recipe(recipeId).collectAsState(initial = null)
+    val recipeTime by viewModel.recipeTime(recipeId).collectAsState(initial = 0)
     val steps by viewModel.steps(recipeId).collectAsState(initial = emptyList())
     val favoritesId by viewModel.favoritesId().collectAsState(initial = emptyList())
-
 
     Scaffold(
         modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 50.dp),
@@ -45,7 +46,7 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
                 },
                 onBackClicked = { navController.popBackStack() },
                 onHeartClicked = {
-                    if (favoritesId.contains(recipeId)) viewModel.insertFavorite(recipeId)
+                    if (!favoritesId.contains(recipeId)) viewModel.insertFavorite(recipeId)
                     else viewModel.deleteFavorite(recipeId)
                 },
                 title = recipe?.name ?: "null"
@@ -61,14 +62,14 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
         ) {
 
             Column(
-                Modifier.padding(12.dp)
+                Modifier.padding(8.dp)
             ) {
 
                 Row(
                     Modifier.padding(8.dp),
                 ) {
                     Text(
-                        text = "Time: ${recipe?.cookingTime} min",
+                        text = "Time: $recipeTime min",
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f)
                     )
@@ -109,10 +110,10 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
                 }
                 ExpandableTextFieldCard(
                     recipeId = recipeId,
-                    onAddClicked = fun(step: CookingStep, id: Int) {
+                    onAddClicked = fun(step: CookingStep, recipeId: Int) {
                         viewModel.insertStep(
                             step,
-                            id
+                            recipeId
                         )
                     }
                 )

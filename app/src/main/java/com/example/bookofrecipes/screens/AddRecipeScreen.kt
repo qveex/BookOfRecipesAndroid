@@ -32,8 +32,6 @@ fun AddRecipeScreen(
 ) {
 
     val context = LocalContext.current
-    val MAX_BYTE_LENGTH = 1
-    val MAX_INT_LENGTH = 3
 
     Scaffold(
 
@@ -49,7 +47,6 @@ fun AddRecipeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                var recipeTime by remember { mutableStateOf("") }
                 var recipeCost by remember { mutableStateOf("") }
                 var recipeComplexity by remember { mutableStateOf("") }
                 var recipeSpicy by remember { mutableStateOf("") }
@@ -75,29 +72,18 @@ fun AddRecipeScreen(
                         .fillMaxWidth(),
                     value = recipeName,
                     onValueChange = { recipeName = it },
-                    label = { Text("Recipe name*") },
+                    label = { Text("Recipe name") },
                     singleLine = true
 
                 )
 
                 Row() {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .padding(12.dp)
-                            .width(80.dp),
-                        value = recipeTime,
-                        onValueChange = { recipeTime = it },
-                        label = { Text("Time") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        )
-                    )
 
                     OutlinedTextField(
                         modifier = Modifier
                             .padding(12.dp)
-                            .width(80.dp),
+                            .width(80.dp)
+                            .weight(1f),
                         value = recipeCost,
                         onValueChange = { recipeCost = it },
                         label = { Text("Cost") },
@@ -112,7 +98,8 @@ fun AddRecipeScreen(
                     OutlinedTextField(
                         modifier = Modifier
                             .padding(12.dp)
-                            .width(80.dp),
+                            .width(80.dp)
+                            .weight(1f),
                         value = recipeComplexity,
                         onValueChange = { recipeComplexity = it },
                         label = { Text("Diff") },
@@ -126,7 +113,8 @@ fun AddRecipeScreen(
                     OutlinedTextField(
                         modifier = Modifier
                             .padding(12.dp)
-                            .width(80.dp),
+                            .width(80.dp)
+                            .weight(1f),
                         value = recipeSpicy,
                         onValueChange = { recipeSpicy = it },
                         label = { Text("Spicy") },
@@ -142,12 +130,12 @@ fun AddRecipeScreen(
                 OutlinedAddButton(
                     text = "create!",
                     onClicked = {
-                        if (isValid(recipeTime, recipeCost, recipeComplexity, recipeSpicy)) {
+                        if (isValid(recipeCost, recipeComplexity, recipeSpicy)) {
                             viewModel.insertRecipe(
                                 Recipe(
                                     Description(.0, .0, .0, .0),
                                     recipeName,
-                                    recipeTime.toInt(),
+                                    0,
                                     recipeCuisine,
                                     recipeCost.toInt(),
                                     recipeComplexity.toByte(),
@@ -170,9 +158,9 @@ fun AddRecipeScreen(
 
 }
 
-fun isValid(time: String, cost: String, complexity: String, spicy: String) =
-    if (time.isDigitsOnly() && cost.isDigitsOnly() && complexity.isDigitsOnly() && spicy.isDigitsOnly())
-        time.toInt() in 0..999 && cost.toInt() in 0..999 && complexity.toInt() in 0..5 && spicy.toInt() in 0..5
+fun isValid(cost: String, complexity: String, spicy: String) =
+    if (cost.isDigitsOnly() && complexity.isDigitsOnly() && spicy.isDigitsOnly() && cost.isNotEmpty() && complexity.isNotEmpty() && spicy.isNotEmpty())
+        cost.toInt() in 0..9999 && complexity.toInt() in 0..10 && spicy.toInt() in 0..10
     else false
 
 

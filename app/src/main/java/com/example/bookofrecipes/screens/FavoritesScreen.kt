@@ -5,15 +5,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bookofrecipes.controllers.BookOfRecipes
+import com.example.bookofrecipes.viewmodel.RecipeViewModel
 import com.example.bookofrecipes.widgets.RecipeItem
 
 @Composable
-fun FavoritesScreen(navController: NavController) {
+fun FavoritesScreen(navController: NavController, viewModel: RecipeViewModel) {
+
+    val favsId = viewModel.favoritesId().collectAsState(initial = emptyList())
+    val favs = viewModel.favorites(favsId.value).collectAsState(initial = emptyList())
+
     Box(
         modifier = Modifier
             .background(Color.DarkGray)
@@ -29,7 +35,7 @@ fun FavoritesScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
 
-                items(items = BookOfRecipes.getFavorites()) { recipe ->
+                items(items = favs.value) { recipe ->
                     RecipeItem(recipe = recipe, navController = navController)
                 }
 

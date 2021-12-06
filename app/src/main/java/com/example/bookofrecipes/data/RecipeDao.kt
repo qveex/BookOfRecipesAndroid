@@ -34,8 +34,11 @@ interface RecipeDao {
     @Query("SELECT * FROM Recipe WHERE recipeId = :recipeId")
     fun getRecipe(recipeId: Int): Flow<Recipe>
 
-    @Query("SELECT * FROM CookingStep WHERE recipeId = :recipeId")
+    @Query("SELECT * FROM CookingStep WHERE recipeId = :recipeId ORDER BY number")
     fun getSteps(recipeId: Int): Flow<List<CookingStep>>
+
+    @Query("SELECT COALESCE(SUM(time), 0) AS recipeTime FROM CookingStep WHERE recipeId = :recipeId")
+    fun getRecipeTime(recipeId: Int): Flow<Int>
 
     @Query("SELECT * FROM RecipeIngredientCrossRef WHERE recipeId = :recipeId")
     fun getRecipeIngredientsRef(recipeId: Int): Flow<List<RecipeIngredientCrossRef>>
@@ -95,5 +98,8 @@ interface RecipeDao {
 
     @Query("DELETE FROM Favorite WHERE recipeId = :recipeId")
     suspend fun deleteFavorite(recipeId: Int)
+
+    @Query("DELETE FROM CookingStep WHERE stepId = :stepId")
+    suspend fun deleteStep(stepId: Int)
 
 }
