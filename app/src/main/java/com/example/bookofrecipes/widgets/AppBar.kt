@@ -15,6 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
@@ -173,7 +174,8 @@ fun DishAppBar(
             Text(
                 color = Color.White,
                 text = title,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                overflow = TextOverflow.Ellipsis
             )
         },
         actions = {
@@ -214,7 +216,8 @@ fun RecipeAppBar(
             Text(
                 color = Color.White,
                 text = title,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                overflow = TextOverflow.Ellipsis
             )
         },
         navigationIcon = {

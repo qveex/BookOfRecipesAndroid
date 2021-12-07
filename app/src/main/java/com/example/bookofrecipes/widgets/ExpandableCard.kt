@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,9 +42,10 @@ fun ExpandableCard(
     description: String,
     descriptionFontSize: TextUnit = MaterialTheme.typography.subtitle1.fontSize,
     descriptionFontWeight: FontWeight = FontWeight.Normal,
-    descriptionMaxLines: Int = 4,
+    descriptionMaxLines: Int = 5,
     shape: CornerBasedShape = Shapes.medium,
-    padding: Dp = 8.dp
+    padding: Dp = 8.dp,
+    onDeleteClicked: () -> Unit,
 ) {
 
     var expendedState by remember { mutableStateOf(false) }
@@ -102,19 +104,33 @@ fun ExpandableCard(
                 }
             }
             if (expendedState) {
-                Text(
-                    text = description,
-                    fontSize = descriptionFontSize,
-                    fontWeight = descriptionFontWeight,
-                    maxLines = descriptionMaxLines,
-                    overflow = TextOverflow.Ellipsis
-                )
-
+                Row() {
+                    Text(
+                        modifier = Modifier.weight(8f),
+                        text = description,
+                        fontSize = descriptionFontSize,
+                        fontWeight = descriptionFontWeight,
+                        maxLines = descriptionMaxLines,
+                        //overflow = TextOverflow.Ellipsis,
+                    )
+                    IconButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            onDeleteClicked()
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete Icon")
+                    }
+                }
             }
         }
     }
 
 }
+
+
+
+
 
 @ExperimentalMaterialApi
 @Composable
@@ -157,7 +173,9 @@ fun ExpandableTextFieldCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextField(
-                    modifier = Modifier.weight(6f).padding(0.dp, 0.dp, 3.dp, 0.dp),
+                    modifier = Modifier
+                        .weight(6f)
+                        .padding(0.dp, 0.dp, 3.dp, 0.dp),
                     label = { Text(text = "title") },
                     singleLine = true,
                     value = stepTitle,
@@ -202,8 +220,10 @@ fun ExpandableTextFieldCard(
                                     )
                                     stepTitle = ""
                                     stepInfo = ""
+                                    stepTime = ""
                                 } else {
-                                    Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
                             }
                         ) {
@@ -229,6 +249,7 @@ fun ExpandableCardPreview() {
     ExpandableCard(
         title = "Title",
         time = 15,
-        description = ""
+        description = "",
+        onDeleteClicked =  {}
     )
 }

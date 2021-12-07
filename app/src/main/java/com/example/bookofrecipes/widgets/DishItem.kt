@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -52,15 +53,29 @@ fun DishItem(dish: Dish, navController: NavController) {
                 horizontalArrangement = Arrangement.Center
             ) {
 
-                Image(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape)
-                        .weight(1f),
-                    contentScale = ContentScale.Crop,
-                    painter = painterResource(id = R.drawable.im),
-                    contentDescription = "Test im"
-                )
+                if (dish.bitmap != null) {
+                    Image(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .weight(1f),
+                        contentScale = ContentScale.Crop,
+                        bitmap = dish.bitmap.asImageBitmap(),
+                        contentDescription = "Test im"
+                    )
+                }
+                else {
+                    Image(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .weight(1f),
+                        contentScale = ContentScale.Crop,
+                        painter = painterResource(id = R.drawable.ic_baseline_image_128),
+                        contentDescription = "Test im"
+                    )
+                }
+
 
                 Box(Modifier.weight(2f)) {
 

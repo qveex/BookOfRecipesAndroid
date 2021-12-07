@@ -33,6 +33,8 @@ class Repository @Inject constructor(
 
     fun getSteps(recipeId: Int) = recipeDao.getSteps(recipeId = recipeId)
 
+    fun getStepsCount(recipeId: Int) = recipeDao.getStepsCount(recipeId)
+
     fun getRecipeTime(recipeId: Int) = recipeDao.getRecipeTime(recipeId)
 
     fun getFavorites(favs: List<Int>) = recipeDao.getFavorites(favs)

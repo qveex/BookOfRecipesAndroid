@@ -1,5 +1,6 @@
 package com.example.bookofrecipes.models
 
+import android.graphics.Bitmap
 import androidx.room.*
 import com.example.bookofrecipes.controllers.BookOfRecipes
 
@@ -8,13 +9,15 @@ import com.example.bookofrecipes.controllers.BookOfRecipes
 data class Dish(
 
     val name: String,
-    val info: String
+    val info: String,
+    val bitmap: Bitmap? = null
 
 ) {
 
-    private constructor(name: String, info: String, recipes: MutableList<Recipe>) : this(
+    private constructor(name: String, info: String, bitmap: Bitmap?, recipes: MutableList<Recipe>) : this(
         name,
-        info
+        info,
+        bitmap
     ) {
         this.recipes = recipes
     }
@@ -28,6 +31,7 @@ data class Dish(
             this(
                 builder.name,
                 builder.info,
+                builder.bitmap,
                 builder.recipes,
             )
 
@@ -68,10 +72,11 @@ data class Dish(
     class Builder(
 
         val recipes: MutableList<Recipe>,
-        val name: String
+        val name: String,
 
     ) {
 
+        val bitmap: Bitmap? = null
         var info: String = ""
 
         fun build() = Dish(this)

@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -62,15 +63,28 @@ fun DishScreen(navController: NavController, viewModel: RecipeViewModel, dishId:
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Image(
-                    modifier = Modifier
-                        .size(300.dp, 200.dp)
-                        .clip(RoundedCornerShape(50.dp))
-                        .padding(12.dp),
-                    contentScale = ContentScale.Fit,
-                    painter = painterResource(id = R.drawable.im),
-                    contentDescription = "Test im"
-                )
+                if (dish.value?.bitmap != null) {
+                    Image(
+                        modifier = Modifier
+                            .size(300.dp, 200.dp)
+                            .clip(RoundedCornerShape(50.dp))
+                            .padding(12.dp),
+                        contentScale = ContentScale.Fit,
+                        bitmap = dish.value!!.bitmap!!.asImageBitmap(),
+                        contentDescription = "Test im"
+                    )
+                } else {
+                    Image(
+                        modifier = Modifier
+                            .size(300.dp, 200.dp)
+                            .clip(RoundedCornerShape(50.dp))
+                            .padding(12.dp),
+                        contentScale = ContentScale.Fit,
+                        painter = painterResource(id = R.drawable.im),
+                        contentDescription = "Test im"
+                    )
+                }
+
                 RowTextCenter(text = dish.value?.info ?: "null")
                 DishDivider()
                 RowTextCenter(text = "Recipes")

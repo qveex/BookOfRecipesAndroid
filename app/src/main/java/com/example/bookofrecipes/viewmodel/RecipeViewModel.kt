@@ -51,6 +51,8 @@ class RecipeViewModel @ViewModelInject constructor(
 
     fun steps(recipeId: Int): Flow<List<CookingStep>> = repository.getSteps(recipeId)
 
+    fun stepsCount(recipeId: Int): Int = repository.getStepsCount(recipeId)
+
     fun favorites(favs: List<Int>): Flow<List<Recipe>> = repository.getFavorites(favs)
 
     fun favoritesId(): Flow<List<Int>> = repository.getFavsId()
@@ -103,7 +105,7 @@ class RecipeViewModel @ViewModelInject constructor(
     fun insertStep(step: CookingStep, recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             step.recipeId = recipeId
-            step.number = 1
+            step.number = repository.getStepsCount(recipeId) + 1
             repository.insertStep(step)
         }
     }

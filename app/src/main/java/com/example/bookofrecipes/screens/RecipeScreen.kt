@@ -65,6 +65,8 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
                 Modifier.padding(8.dp)
             ) {
 
+                TitleRowTextCenter(text = recipe?.name ?: "null")
+                
                 Row(
                     Modifier.padding(8.dp),
                 ) {
@@ -104,7 +106,8 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
                         ExpandableCard(
                             title = step.title,
                             description = step.info,
-                            time = step.time
+                            time = step.time,
+                            onDeleteClicked = { }
                         )
                     }
                 }
@@ -131,7 +134,7 @@ fun StepsList(steps: List<CookingStep>) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(items = steps) { step ->
-            ExpandableCard(title = step.title, description = step.info, time = step.time)
+            ExpandableCard(title = step.title, description = step.info, time = step.time, onDeleteClicked = { })
         }
     }
 }

@@ -40,6 +40,9 @@ interface RecipeDao {
     @Query("SELECT COALESCE(SUM(time), 0) AS recipeTime FROM CookingStep WHERE recipeId = :recipeId")
     fun getRecipeTime(recipeId: Int): Flow<Int>
 
+    @Query("SELECT COALESCE(COUNT(stepId), 0) AS count FROM CookingStep WHERE recipeId = :recipeId")
+    fun getStepsCount(recipeId: Int): Int
+
     @Query("SELECT * FROM RecipeIngredientCrossRef WHERE recipeId = :recipeId")
     fun getRecipeIngredientsRef(recipeId: Int): Flow<List<RecipeIngredientCrossRef>>
 
