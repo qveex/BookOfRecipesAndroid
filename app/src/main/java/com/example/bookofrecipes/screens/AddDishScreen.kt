@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -119,8 +120,12 @@ fun AddDishScreen(navController: NavController, viewModel: RecipeViewModel) {
             OutlinedAddButton(
                 text = "create!",
                 onClicked = {
-                    viewModel.insertDish(Dish(dishName, dishInfo, bitmap))
-                    navController.navigate(Screen.Dishes.route)
+                    if (dishName.isNotEmpty() && dishInfo.isNotEmpty() && bitmap != null) {
+                        viewModel.insertDish(Dish(dishName, dishInfo, bitmap))
+                        navController.navigate(Screen.Dishes.route)
+                        Toast.makeText(context, "Dish was created!", Toast.LENGTH_SHORT).show()
+                    }
+                    else Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
                 }
             )
 

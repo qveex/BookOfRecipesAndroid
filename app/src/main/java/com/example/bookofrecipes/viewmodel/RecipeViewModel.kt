@@ -11,6 +11,7 @@ import com.example.bookofrecipes.repositories.Repository
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
 
@@ -53,6 +54,12 @@ class RecipeViewModel @ViewModelInject constructor(
 
     fun stepsCount(recipeId: Int): Int = repository.getStepsCount(recipeId)
 
+    fun ingredients(text: String): Flow<List<IngredientEntity>> = repository.getIngredients(text)
+
+    fun recipeIngredients(recipeId: Int): Flow<List<IngredientEntity>> = repository.getRecipeIngs(recipeId)
+
+    fun recipeNotIngredients(recipeId: Int): Flow<List<IngredientEntity>> = repository.getNotRecipeIngs(recipeId)
+
     fun favorites(favs: List<Int>): Flow<List<Recipe>> = repository.getFavorites(favs)
 
     fun favoritesId(): Flow<List<Int>> = repository.getFavsId()
@@ -92,6 +99,17 @@ class RecipeViewModel @ViewModelInject constructor(
                     )
                 )
             }
+        }
+    }
+
+    fun insertRecipeIngredient(ingredient: IngredientEntity, recipeId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertRecIngRef(RecipeIngredientCrossRef(
+                recipeId,
+                ingredient.ingredientId,
+                1,
+                ""
+            ))
         }
     }
 
@@ -167,6 +185,17 @@ class RecipeViewModel @ViewModelInject constructor(
     fun deleteStep(stepId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteStep(stepId)
+        }
+    }
+
+    fun deleteRecipeIngredient(ingredient: IngredientEntity, recipeId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteRecipeIngredient(RecipeIngredientCrossRef(
+                recipeId,
+                ingredient.ingredientId,
+                1,
+                ""
+            ))
         }
     }
 

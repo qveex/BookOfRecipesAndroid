@@ -25,7 +25,11 @@ class Repository @Inject constructor(
 
     fun getRecipe(recipeId: Int) = recipeDao.getRecipe(recipeId)
 
-    fun getIngredients() = recipeDao.getIngredients()
+    fun getIngredients(text: String?) = recipeDao.getIngredients(text)
+
+    fun getRecipeIngs(recipeId: Int) = recipeDao.getRecipeIngs(recipeId)
+
+    fun getNotRecipeIngs(recipeId: Int) = recipeDao.getNotRecipeIngs(recipeId)
 
     fun getAllRecipes() = recipeDao.getAllRecipes()
 
@@ -78,4 +82,6 @@ class Repository @Inject constructor(
     suspend fun deleteFavorite(recipeId: Int) = recipeDao.deleteFavorite(recipeId)
 
     suspend fun deleteStep(stepId: Int) = recipeDao.deleteStep(stepId)
+
+    suspend fun deleteRecipeIngredient(ref: RecipeIngredientCrossRef) = recipeDao.deleteRecipeIngredient(ref)
 }

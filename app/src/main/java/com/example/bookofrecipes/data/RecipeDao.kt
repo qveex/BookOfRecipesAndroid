@@ -7,11 +7,25 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecipeDao {
 
-    @Query("SELECT * FROM IngredientEntity")
-    fun getIngredients(): Flow<List<IngredientEntity>>
+    @Query("SELECT * FROM IngredientEntity WHERE name LIKE '%' || :text || '%'")
+    fun getIngredients(text: String?): Flow<List<IngredientEntity>>
 
     @Query("SELECT ingredientId FROM IngredientEntity WHERE name = :name")
     fun getIngId(name: String): Flow<Int>
+
+    @Query(
+        "SELECT * FROM IngredientEntity " +
+                "INNER JOIN RecipeIngredientCrossRef ON IngredientEntity.ingredientId = RecipeIngredientCrossRef.ingredientId " +
+                "WHERE RecipeIngredientCrossRef.recipeId = :recipeId"
+    )
+    fun getRecipeIngs(recipeId: Int): Flow<List<IngredientEntity>>
+
+    @Query(
+        "SELECT * FROM IngredientEntity " +
+                "WHERE ingredientId NOT IN " +
+                "(SELECT ingredientId FROM RecipeIngredientCrossRef WHERE recipeId = :recipeId)"
+    )
+    fun getNotRecipeIngs(recipeId: Int): Flow<List<IngredientEntity>>
 
     @Query("SELECT * FROM Dish WHERE name = :name")
     fun getDishesByName(name: String): Flow<List<Dish>>
@@ -63,7 +77,6 @@ interface RecipeDao {
 
 
 
-
     @Insert
     suspend fun insertDish(dish: Dish): Long
 
@@ -92,7 +105,6 @@ interface RecipeDao {
 
 
 
-
     @Query("DELETE FROM Dish WHERE dishId = :dishId")
     suspend fun deleteDish(dishId: Int)
 
@@ -104,5 +116,8 @@ interface RecipeDao {
 
     @Query("DELETE FROM CookingStep WHERE stepId = :stepId")
     suspend fun deleteStep(stepId: Int)
+
+    @Delete
+    suspend fun deleteRecipeIngredient(ref: RecipeIngredientCrossRef)
 
 }

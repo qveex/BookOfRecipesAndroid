@@ -20,7 +20,6 @@ data class CookingStep(
     val info: String,
     val time: Int,
     var number: Int
-    //val image: Image
 
 ) {
     @PrimaryKey(autoGenerate = true)

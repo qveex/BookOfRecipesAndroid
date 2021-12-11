@@ -114,7 +114,7 @@ fun DishItemPreview() {
         dish = Dish.build(
             recipes = mutableListOf<Recipe>(),
             name = "Утка по татарски"
-        ) { info = "Сочная утка с необычным послевкусием и секретным ингридиентом kfkfkfkfk kfkfkf kfkfkfk fkfkfkf fkfkfkfk fafaf fffff fffff" },
+        ) { info = "Сочная утка с необычным послевкусием и секретным ингридиентом" },
         navController = rememberNavController()
     )
 

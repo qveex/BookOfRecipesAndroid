@@ -1,6 +1,5 @@
 package com.example.bookofrecipes.screens
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -19,7 +18,7 @@ import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.bookofrecipes.models.Description
+import com.example.bookofrecipes.models.EnergyValue
 import com.example.bookofrecipes.models.Recipe
 import com.example.bookofrecipes.viewmodel.RecipeViewModel
 import com.example.bookofrecipes.widgets.nav.Screen
@@ -133,7 +132,7 @@ fun AddRecipeScreen(
                         if (isValid(recipeCost, recipeComplexity, recipeSpicy)) {
                             viewModel.insertRecipe(
                                 Recipe(
-                                    Description(.0, .0, .0, .0),
+                                    EnergyValue(.0, .0, .0, .0),
                                     recipeName,
                                     0,
                                     recipeCuisine,
@@ -160,7 +159,7 @@ fun AddRecipeScreen(
 
 fun isValid(cost: String, complexity: String, spicy: String) =
     if (cost.isDigitsOnly() && complexity.isDigitsOnly() && spicy.isDigitsOnly() && cost.isNotEmpty() && complexity.isNotEmpty() && spicy.isNotEmpty())
-        cost.toInt() in 0..9999 && complexity.toInt() in 0..10 && spicy.toInt() in 0..10
+        cost.toInt() >= 0 && complexity.toInt() in 0..10 && spicy.toInt() in 0..10
     else false
 
 

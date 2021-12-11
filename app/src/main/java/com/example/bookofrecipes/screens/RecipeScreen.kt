@@ -1,6 +1,5 @@
 package com.example.bookofrecipes.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,10 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bookofrecipes.models.CookingStep
+import com.example.bookofrecipes.models.IngredientEntity
 import com.example.bookofrecipes.viewmodel.RecipeViewModel
-import com.example.bookofrecipes.widgets.ExpandableCard
-import com.example.bookofrecipes.widgets.ExpandableTextFieldCard
-import com.example.bookofrecipes.widgets.RecipeAppBar
+import com.example.bookofrecipes.widgets.*
 import com.example.bookofrecipes.widgets.nav.Screen
 
 @ExperimentalMaterialApi
@@ -34,6 +32,8 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
     val recipe by viewModel.recipe(recipeId).collectAsState(initial = null)
     val recipeTime by viewModel.recipeTime(recipeId).collectAsState(initial = 0)
     val steps by viewModel.steps(recipeId).collectAsState(initial = emptyList())
+    val allIngs by viewModel.recipeNotIngredients(recipeId).collectAsState(initial = emptyList())
+    val ings by viewModel.recipeIngredients(recipeId).collectAsState(initial = emptyList())
     val favoritesId by viewModel.favoritesId().collectAsState(initial = emptyList())
 
     Scaffold(
@@ -97,6 +97,27 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
                         modifier = Modifier.weight(1f)
                     )
                 }
+
+                IngDropDownMenu(
+                    allIngs,
+                    "Ингредиенты",
+                    onClicked = fun (ing: IngredientEntity) {
+                        viewModel.insertRecipeIngredient(
+                            ing,
+                            recipeId
+                        )
+                    }
+                )
+                IngList(
+                    ings = ings,
+                    onClicked = fun(ing: IngredientEntity) {
+                        viewModel.deleteRecipeIngredient(
+                            ing,
+                            recipeId
+                        )
+                    }
+                )
+
                 if (steps.isEmpty()) {
                     TitleRowTextCenter(text = "Рецепт потерялся...")
                     RowTextCenter(text = "Создайте свой!")
@@ -107,7 +128,7 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
                             title = step.title,
                             description = step.info,
                             time = step.time,
-                            onDeleteClicked = { }
+                            onDeleteClicked = { viewModel.deleteStep(step.stepId) }
                         )
                     }
                 }

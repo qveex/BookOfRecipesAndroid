@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 
 data class Ingredient (
 
-    var name: String,
-    var number: Int,
-    var measure: String
+    val name: String,
+    val number: Int,
+    val measure: String
 
 ) {
 

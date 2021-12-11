@@ -14,7 +14,7 @@ import androidx.room.*
 )
 data class Recipe(
 
-    @Embedded val description: Description?,
+    @Embedded val energyValue: EnergyValue?,
     val name: String,
     val cookingTime: Int,
     val cuisine: String,
@@ -35,14 +35,14 @@ data class Recipe(
     private constructor(
         steps: List<CookingStep>,
         ingredients: List<Ingredient>,
-        description: Description?,
+        energyValue: EnergyValue?,
         name: String,
         cookingTime: Int,
         cuisine: String,
         cost: Int,
         complexity: Byte,
         spicy: Byte
-    ): this(description, name, cookingTime, cuisine, cost, complexity, spicy) {
+    ): this(energyValue, name, cookingTime, cuisine, cost, complexity, spicy) {
         this.steps = steps
         this.ingredients = ingredients
     }
@@ -50,7 +50,7 @@ data class Recipe(
     private constructor(builder: Builder) :
             this(
                 builder.steps,
-                builder.ingredients, builder.description,
+                builder.ingredients, builder.energyValue,
                 builder.name, builder.cookingTime,
                 builder.cuisine, builder.cost,
                 builder.complexity, builder.spicy
@@ -89,7 +89,7 @@ data class Recipe(
 
     ) {
 
-        var description: Description? = null
+        var energyValue: EnergyValue? = null
         var cookingTime: Int = 0
         var cuisine: String = "Другая"
         var cost: Int = 0
@@ -102,6 +102,6 @@ data class Recipe(
     }
 
     override fun toString(): String {
-        return "Recipe(id=$recipeId, dishId=$dishId, description=$description, name=$name, time=$cookingTime, cuisine=$cuisine, cost=$cost, complexity=$complexity, spicy=$spicy, ings=$ingredients, steps=$steps)"
+        return "Recipe(id=$recipeId, dishId=$dishId, energyValue=$energyValue, name=$name, time=$cookingTime, cuisine=$cuisine, cost=$cost, complexity=$complexity, spicy=$spicy, ings=$ingredients, steps=$steps)"
     }
 }
