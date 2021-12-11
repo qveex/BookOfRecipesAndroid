@@ -52,6 +52,11 @@ fun AddRecipeScreen(
                 var recipeCuisine by remember { mutableStateOf("") }
                 var recipeName by remember { mutableStateOf("") }
 
+                var recipeCalorie by remember { mutableStateOf("") }
+                var recipeFats by remember { mutableStateOf("") }
+                var recipeProteins by remember { mutableStateOf("") }
+                var recipeCarbHyd by remember { mutableStateOf("") }
+
                 TitleRowTextCenter(text = "Create recipe!")
 
                 OutlinedTextField(
@@ -126,13 +131,81 @@ fun AddRecipeScreen(
                     )
                 }
 
+                Row() {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .width(80.dp)
+                            .weight(1f),
+                        value = recipeCalorie,
+                        onValueChange = { recipeCalorie = it },
+                        label = { Text("Calorie") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        )
+
+                    )
+
+
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .width(80.dp)
+                            .weight(1f),
+                        value = recipeProteins,
+                        onValueChange = { recipeProteins = it },
+                        label = { Text("Proteins") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        )
+
+                    )
+
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .width(80.dp)
+                            .weight(1f),
+                        value = recipeFats,
+                        onValueChange = { recipeFats = it },
+                        label = { Text("Fats") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        shape = MaterialTheme.shapes.large
+                    )
+
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .width(80.dp)
+                            .weight(1f),
+                        value = recipeCarbHyd,
+                        onValueChange = { recipeCarbHyd = it },
+                        label = { Text("CHydr") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        shape = MaterialTheme.shapes.large
+                    )
+                }
+
                 OutlinedAddButton(
                     text = "create!",
                     onClicked = {
-                        if (isValid(recipeCost, recipeComplexity, recipeSpicy)) {
+                        if (isValid(recipeCost, recipeComplexity, recipeSpicy) && isEnergyValueValid(recipeCalorie, recipeProteins, recipeFats, recipeCarbHyd)) {
                             viewModel.insertRecipe(
                                 Recipe(
-                                    EnergyValue(.0, .0, .0, .0),
+                                    EnergyValue(
+                                        recipeCalorie.toDouble(),
+                                        recipeProteins.toDouble(),
+                                        recipeFats.toDouble(),
+                                        recipeCarbHyd.toDouble()
+                                    ),
                                     recipeName,
                                     0,
                                     recipeCuisine,
@@ -142,10 +215,10 @@ fun AddRecipeScreen(
                                 ),
                                 dishId = dishId
                             )
-                            Toast.makeText(context, "Recipe was created!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Recipe was created!", Toast.LENGTH_SHORT)
+                                .show()
                             navController.navigate(Screen.Dish.passId(dishId))
-                        }
-                        else Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
+                        } else Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
                     }
                 )
 
@@ -160,6 +233,15 @@ fun AddRecipeScreen(
 fun isValid(cost: String, complexity: String, spicy: String) =
     if (cost.isDigitsOnly() && complexity.isDigitsOnly() && spicy.isDigitsOnly() && cost.isNotEmpty() && complexity.isNotEmpty() && spicy.isNotEmpty())
         cost.toInt() >= 0 && complexity.toInt() in 0..10 && spicy.toInt() in 0..10
+    else false
+
+fun isEnergyValueValid(calorie: String, proteins: String, fats: String, ch: String) =
+    if (
+        calorie.isDigitsOnly() && proteins.isDigitsOnly() &&
+        fats.isDigitsOnly() && ch.isDigitsOnly() &&
+        calorie.isNotEmpty() && proteins.isNotEmpty() &&
+        fats.isNotEmpty() && ch.isNotEmpty()
+    ) calorie.toDouble() >= 0 && proteins.toDouble() >= 0 && fats.toDouble() >= 0 && ch.toDouble() >= 0
     else false
 
 

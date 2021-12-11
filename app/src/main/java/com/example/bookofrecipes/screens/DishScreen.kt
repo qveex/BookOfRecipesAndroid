@@ -3,6 +3,7 @@ package com.example.bookofrecipes.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bookofrecipes.R
+import com.example.bookofrecipes.models.IngredientEntity
 import com.example.bookofrecipes.models.Recipe
 import com.example.bookofrecipes.ui.theme.Typography
 import com.example.bookofrecipes.viewmodel.RecipeViewModel
@@ -131,11 +133,12 @@ fun RecipeList(recipes: List<Recipe>, navController: NavController, viewModel: R
 
 
 @Composable
-fun TitleRowTextCenter(text: String) {
+fun TitleRowTextCenter(text: String, onClicked: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp, 16.dp, 8.dp, 8.dp),
+            .padding(8.dp, 16.dp, 8.dp, 8.dp)
+            .clickable { onClicked() },
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top,
     ) {
