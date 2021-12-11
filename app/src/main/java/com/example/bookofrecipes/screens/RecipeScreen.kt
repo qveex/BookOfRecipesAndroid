@@ -106,6 +106,9 @@ fun RecipeScreen(navController: NavController, viewModel: RecipeViewModel, recip
                             ing,
                             recipeId
                         )
+                    },
+                    onAddClicked = fun (ing: IngredientEntity) {
+                        viewModel.insertIngredient(ing)
                     }
                 )
                 IngList(

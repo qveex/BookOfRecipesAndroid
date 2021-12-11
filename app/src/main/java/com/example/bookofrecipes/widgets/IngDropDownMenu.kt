@@ -1,12 +1,15 @@
 package com.example.bookofrecipes.widgets
 
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -15,6 +18,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,19 +31,20 @@ fun IngDropDownMenu(
     ings: List<IngredientEntity>,
     label: String,
     onClicked: (IngredientEntity) -> Unit,
+    onAddClicked: (IngredientEntity) -> Unit
 ) {
 
-    var selectedText by remember { mutableStateOf("") }
-    var textFieldSize by remember { mutableStateOf(Size.Zero)}
+    var curText by remember { mutableStateOf("") }
+    var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var expendedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(targetValue = if (expendedState) 180f else 0f)
-
+    val context = LocalContext.current
 
     Column(
     ) {
         OutlinedTextField(
-            value = selectedText,
-            onValueChange = { selectedText = it },
+            value = curText,
+            onValueChange = { text -> curText = text },
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates -> textFieldSize = coordinates.size.toSize() },
@@ -64,12 +69,33 @@ fun IngDropDownMenu(
             modifier = Modifier
                 .width(with(LocalDensity.current) { textFieldSize.width.toDp() })
         ) {
-            ings.forEach {
-                DropdownMenuItem(
-                    onClick = { onClicked(it) }
-                ) {
-                    Text(text = it.name)
+            val curIngs = ings.filter { it.name.contains(curText) }
+            if (curIngs.isNotEmpty()) {
+                curIngs.forEach {
+                    DropdownMenuItem(
+                        onClick = { onClicked(it) }
+                    ) {
+                        Text(text = it.name)
+                    }
                 }
+            } else {
+                ExtendedFloatingActionButton(
+                    modifier = Modifier.padding(8.dp),
+                    onClick = {
+                        if (curText.isNotEmpty()) {
+                            onAddClicked(IngredientEntity(curText))
+                        } else {
+                            Toast.makeText(context, "Wrong data!!!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Filled.AddCircle,
+                            contentDescription = "Add"
+                        )
+                    },
+                    text = { Text("create ing") }
+                )
             }
         }
     }
