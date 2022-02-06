@@ -1,5 +1,6 @@
 package com.example.bookofrecipes.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -7,12 +8,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import com.example.bookofrecipes.viewmodel.RecipeViewModel
 import com.example.bookofrecipes.widgets.DishList
 import com.example.bookofrecipes.widgets.MainAppBar
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun ListDishScreen(viewModel: RecipeViewModel, navController: NavController) {
@@ -48,7 +52,6 @@ fun ListDishScreen(viewModel: RecipeViewModel, navController: NavController) {
 
         DishList(
             dishes = dishes,
-            //BookOfRecipes.findDishes(viewModel.searchTextState.value),
             navController = navController
         )
 

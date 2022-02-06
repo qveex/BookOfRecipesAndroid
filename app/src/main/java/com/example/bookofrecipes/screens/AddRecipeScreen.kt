@@ -197,7 +197,11 @@ fun AddRecipeScreen(
                 OutlinedAddButton(
                     text = "create!",
                     onClicked = {
-                        if (isValid(recipeCost, recipeComplexity, recipeSpicy) && isEnergyValueValid(recipeCalorie, recipeProteins, recipeFats, recipeCarbHyd)) {
+                        if (
+                            isValid(recipeCost, recipeComplexity, recipeSpicy) &&
+                            isEnergyValueValid(recipeCalorie, recipeProteins, recipeFats, recipeCarbHyd) &&
+                                    recipeName.isNotBlank()
+                                ) {
                             viewModel.insertRecipe(
                                 Recipe(
                                     EnergyValue(
@@ -221,9 +225,7 @@ fun AddRecipeScreen(
                         } else Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
                     }
                 )
-
             }
-
         }
     }
 
@@ -231,7 +233,7 @@ fun AddRecipeScreen(
 }
 
 fun isValid(cost: String, complexity: String, spicy: String) =
-    if (cost.isDigitsOnly() && complexity.isDigitsOnly() && spicy.isDigitsOnly() && cost.isNotEmpty() && complexity.isNotEmpty() && spicy.isNotEmpty())
+    if (cost.isDigitsOnly() && complexity.isDigitsOnly() && spicy.isDigitsOnly() && cost.isNotBlank() && complexity.isNotBlank() && spicy.isNotBlank())
         cost.toInt() >= 0 && complexity.toInt() in 0..10 && spicy.toInt() in 0..10
     else false
 
@@ -239,8 +241,8 @@ fun isEnergyValueValid(calorie: String, proteins: String, fats: String, ch: Stri
     if (
         calorie.isDigitsOnly() && proteins.isDigitsOnly() &&
         fats.isDigitsOnly() && ch.isDigitsOnly() &&
-        calorie.isNotEmpty() && proteins.isNotEmpty() &&
-        fats.isNotEmpty() && ch.isNotEmpty()
+        calorie.isNotBlank() && proteins.isNotBlank() &&
+        fats.isNotBlank() && ch.isNotBlank()
     ) calorie.toDouble() >= 0 && proteins.toDouble() >= 0 && fats.toDouble() >= 0 && ch.toDouble() >= 0
     else false
 

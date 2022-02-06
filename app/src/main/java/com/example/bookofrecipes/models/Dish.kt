@@ -1,8 +1,9 @@
 package com.example.bookofrecipes.models
 
 import android.graphics.Bitmap
-import androidx.room.*
-import com.example.bookofrecipes.controllers.BookOfRecipes
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
 
 @Entity

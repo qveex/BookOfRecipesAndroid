@@ -120,7 +120,7 @@ fun AddDishScreen(navController: NavController, viewModel: RecipeViewModel) {
             OutlinedAddButton(
                 text = "create!",
                 onClicked = {
-                    if (dishName.isNotEmpty() && dishInfo.isNotEmpty() && bitmap != null) {
+                    if (dishName.isNotBlank() && bitmap != null) {
                         viewModel.insertDish(Dish(dishName, dishInfo, bitmap))
                         navController.navigate(Screen.Dishes.route)
                         Toast.makeText(context, "Dish was created!", Toast.LENGTH_SHORT).show()

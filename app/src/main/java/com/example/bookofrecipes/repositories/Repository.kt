@@ -1,5 +1,8 @@
 package com.example.bookofrecipes.repositories
 
+import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import com.example.bookofrecipes.data.RecipeDao
 import com.example.bookofrecipes.models.*
 import javax.inject.Inject
@@ -19,7 +22,7 @@ class Repository @Inject constructor(
 
 
 
-    fun getAllDishes(text: String?) = recipeDao.getDishes(text)
+    fun getAllDishes(text: String) = recipeDao.getDishes(text)
 
     fun getDish(dishId: Int) = recipeDao.getDish(dishId)
 

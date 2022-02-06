@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bookofrecipes.controllers.BookOfRecipes
 import com.example.bookofrecipes.viewmodel.RecipeViewModel
 import com.example.bookofrecipes.widgets.RecipeItem
 

@@ -7,12 +7,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecipeDao {
 
+    // поиск ингредиентов по названию
     @Query("SELECT * FROM IngredientEntity WHERE name LIKE '%' || :text || '%'")
     fun getIngredients(text: String?): Flow<List<IngredientEntity>>
 
+    // поиск идентификатора ингредиента по названию
     @Query("SELECT ingredientId FROM IngredientEntity WHERE name = :name")
     fun getIngId(name: String): Flow<Int>
 
+    // получение ингредиентов конкретного рецепта
     @Query(
         "SELECT * FROM IngredientEntity " +
                 "INNER JOIN RecipeIngredientCrossRef ON IngredientEntity.ingredientId = RecipeIngredientCrossRef.ingredientId " +
@@ -20,6 +23,7 @@ interface RecipeDao {
     )
     fun getRecipeIngs(recipeId: Int): Flow<List<IngredientEntity>>
 
+    // получение ингредиентов, которых нет в конкретном блюде
     @Query(
         "SELECT * FROM IngredientEntity " +
                 "WHERE ingredientId NOT IN " +
@@ -27,11 +31,12 @@ interface RecipeDao {
     )
     fun getNotRecipeIngs(recipeId: Int): Flow<List<IngredientEntity>>
 
+    // поиск блюд по названию
     @Query("SELECT * FROM Dish WHERE name = :name")
     fun getDishesByName(name: String): Flow<List<Dish>>
 
     @Query("SELECT * FROM Dish WHERE name LIKE '%' || :text || '%'")
-    fun getDishes(text: String?): Flow<List<Dish>>
+    fun getDishes(text: String): Flow<List<Dish>>
 
     @Query("SELECT * FROM Dish WHERE dishId = :dishId")
     fun getDish(dishId: Int): Flow<Dish>

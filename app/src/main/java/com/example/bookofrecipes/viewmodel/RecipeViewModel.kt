@@ -11,8 +11,6 @@ import com.example.bookofrecipes.repositories.Repository
 import com.example.bookofrecipes.widgets.others.SearchWidgetState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
 
 
@@ -20,15 +18,17 @@ class RecipeViewModel @ViewModelInject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    // States for search widget in DishListScreen
+    // Состояние поискового виджета (открыт / закрыт)
     private val _searchWidgetState: MutableState<SearchWidgetState> =
         mutableStateOf(value = SearchWidgetState.CLOSED)
     val searchWidgetState: State<SearchWidgetState> = _searchWidgetState
 
+    // Состояние текста в поисковой строке
     private val _searchTextState: MutableState<String> =
         mutableStateOf(value = "")
     val searchTextState: State<String> = _searchTextState
 
+    // обновление состояний
     fun updateSearchWidgetState(newValue: SearchWidgetState) {
         _searchWidgetState.value = newValue
     }
@@ -39,11 +39,13 @@ class RecipeViewModel @ViewModelInject constructor(
 
 
 
-
+    // получить все рецепты блюда
     fun recipes(dishId: Int): Flow<List<Recipe>> = repository.getRecipes(dishId)
 
+    // получить все блюда по поисковой строке (или без)
     fun dishes(text: String): Flow<List<Dish>> = repository.getAllDishes(text)
 
+    // получить конерктное блюдо
     fun dish(dishId: Int): Flow<Dish> = repository.getDish(dishId)
 
     fun recipe(recipeId: Int): Flow<Recipe> = repository.getRecipe(recipeId)
@@ -121,6 +123,7 @@ class RecipeViewModel @ViewModelInject constructor(
     }
 
     fun insertStep(step: CookingStep, recipeId: Int) {
+
         viewModelScope.launch(Dispatchers.IO) {
             step.recipeId = recipeId
             step.number = repository.getStepsCount(recipeId) + 1
@@ -128,16 +131,23 @@ class RecipeViewModel @ViewModelInject constructor(
         }
     }
 
-    fun insertAll(dish: Dish) {
+    // добавление блюдо вместе со всеми входящими в него компонентами
+    fun insertDishWithAll(dish: Dish) {
+        // новый поток
         viewModelScope.launch(Dispatchers.IO) {
 
+            // добавление блюда
             repository.insertDish(dish)
+            // для всех рецептов блюда
             dish.getRecipes().forEach { recipe ->
+                // прикрпеляем рецепт к блюду и добавляем в базу
                 recipe.dishId = repository.getLastInsertDish()
                 repository.insertRecipe(recipe)
-
+                // для каждого ингредиента
                 recipe.getIngredients().forEach { ing ->
+                    // добавляем ингредиент в БД (Если его нет)
                     repository.insertIngredient(IngredientEntity(ing.name))
+                    // закрепляем ингредиент за рецептом
                     repository.insertRecIngRef(
                         RecipeIngredientCrossRef(
                             repository.getLastInsertRecipe(),
@@ -147,15 +157,16 @@ class RecipeViewModel @ViewModelInject constructor(
                         )
                     )
                 }
-
+                // закреплячем и добавляем шаги рецепта
                 val steps =
                     recipe.getSteps().onEach { it.recipeId = repository.getLastInsertRecipe() }
                 repository.insertSteps(steps)
 
             }
-
         }
     }
+
+
 
     fun insertFavorite(recipeId: Int) {
         viewModelScope.launch(Dispatchers.IO) {

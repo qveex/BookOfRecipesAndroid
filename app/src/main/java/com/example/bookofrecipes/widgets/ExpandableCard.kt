@@ -27,10 +27,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import com.example.bookofrecipes.controllers.BookOfRecipes
 import com.example.bookofrecipes.models.CookingStep
 import com.example.bookofrecipes.ui.theme.Shapes
-import com.example.bookofrecipes.viewmodel.RecipeViewModel
 
 @ExperimentalMaterialApi
 @Composable
